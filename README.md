@@ -1,6 +1,3 @@
-# hebcal-triennial
-Javascript Triennial Torah Readings
-
 # @hebcal/triennial
 Javascript Triennial Torah Readings
 

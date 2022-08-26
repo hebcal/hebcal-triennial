@@ -379,7 +379,7 @@ export function getTriennialForParshaHaShavua(ev) {
   const aliyotMap = shallowCopy({}, reading.aliyot);
   // possibly replace 7th aliyah and/or maftir
   const reason = {};
-  specialReadings(hd, false, aliyotMap, reason);
+  specialReadings(hd, false, aliyotMap, reason, parsha);
   Object.keys(reason).forEach((num) => {
     const aliyah = aliyotMap[num];
     if (typeof aliyah === 'object') {

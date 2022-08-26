@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/triennial",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Javascript Triennial Torah Readings",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-triennial#readme",
   "dependencies": {
-    "@hebcal/core": "^3.42.2",
-    "@hebcal/leyning": "^6.0.0"
+    "@hebcal/core": "^3.42.3",
+    "@hebcal/leyning": "^6.0.2"
   },
   "typings": "types.d.ts",
   "files": [
@@ -48,8 +48,8 @@
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
-    "ava": "^4.3.1",
-    "core-js": "^3.24.1",
+    "ava": "^4.3.3",
+    "core-js": "^3.25.0",
     "eslint": "^8.22.0",
     "eslint-config-google": "^0.14.0",
     "jsdoc": "^3.6.11",

@@ -134,9 +134,9 @@ test('specialReading1', (t) => {
       p: 35,
       k: 'Numbers',
       b: '7:48',
-      e: '7:59',
-      reason: 'Chanukah Day 7',
-      v: 12,
+      e: '7:53',
+      reason: 'Chanukah Day 7 (on Shabbat)',
+      v: 6,
     },
   };
   t.deepEqual(reading, expected);

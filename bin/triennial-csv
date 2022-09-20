@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const {HDate} = require('@hebcal/core');
+const {writeTriennialCsv} = require('../dist/index');
+
+const today = new HDate();
+const hyear = today.getFullYear();
+
+const numTriennialCycles = 5;
+const yearNum = ((hyear - 5756) % 3) + 1;
+
+for (let i = 0; i < numTriennialCycles; i++) {
+  const yearOffset = (i - 1) * 3;
+  const cycleStartYear = hyear - (yearNum - 1) + yearOffset;
+  const filename = `triennial-${cycleStartYear}-${cycleStartYear+2}.csv`;
+  console.log(`Creating ${filename}`);
+  const stream = fs.createWriteStream(filename, {flags: 'w'});
+  writeTriennialCsv(stream, cycleStartYear);
+  stream.end();
+}

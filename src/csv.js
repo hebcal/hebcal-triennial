@@ -1,22 +1,8 @@
-import {HebrewCalendar, flags, Event} from '@hebcal/core';
+import {HebrewCalendar, flags} from '@hebcal/core';
 import {getLeyningForParshaHaShavua, getLeyningForHoliday,
-  getLeyningForHolidayKey,
+  getParshaDates, writeHolidayMincha,
   getLeyningKeyForEvent, writeCsvLines} from '@hebcal/leyning';
 import {getTriennialForParshaHaShavua, getTriennialHaftaraForHoliday, Triennial} from './triennial';
-
-/**
- * @private
- * @param {Event[]} events
- * @return {Object<string,boolean>}
- */
-function getParshaDates(events) {
-  const parshaEvents = events.filter((ev) => ev.getFlags() === flags.PARSHA_HASHAVUA);
-  const parshaDates = parshaEvents.reduce((set, ev) => {
-    set[ev.getDate().toString()] = true;
-    return set;
-  }, {});
-  return parshaDates;
-}
 
 /**
  * @private
@@ -75,14 +61,7 @@ function writeTriennialEventHoliday(stream, ev) {
       reading.triHaftaraNumV = triHaft.haftaraNumV;
     }
     writeCsvLines(stream, ev, reading, il, false);
-  }
-  if (!(ev.getFlags() & flags.ROSH_CHODESH)) {
-    const minchaDesc = ev.getDesc() + ' (Mincha)';
-    const readingMincha = getLeyningForHolidayKey(minchaDesc);
-    if (readingMincha) {
-      const minchaEv = new Event(ev.getDate(), minchaDesc, flags.USER_EVENT);
-      writeCsvLines(stream, minchaEv, readingMincha, il, false);
-    }
+    writeHolidayMincha(stream, ev, il);
   }
 }
 

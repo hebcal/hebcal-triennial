@@ -98,6 +98,7 @@ export class Triennial {
    * @return {Object<string,Aliyah>} a map of aliyot 1-7 plus "M"
    */
   getReading(parsha, yearNum) {
+    // don't use clone() here because we want to preserve HDate objects
     const reading = shallowCopy({}, this.readings[parsha][yearNum]);
     if (reading.aliyot) {
       Object.values(reading.aliyot).map((aliyah) => calculateNumVerses(aliyah));
@@ -376,7 +377,7 @@ export function getTriennialForParshaHaShavua(ev) {
   if (typeof reading !== 'object') {
     throw new ReferenceError(`Can't load reading for ${name} in ${hyear} (year number ${yearNum})`);
   }
-  const aliyotMap = shallowCopy({}, reading.aliyot);
+  const aliyotMap = clone(reading.aliyot);
   // possibly replace 7th aliyah and/or maftir
   const reason = {};
   specialReadings(hd, false, aliyotMap, reason, parsha);

@@ -1,7 +1,7 @@
 # @hebcal/triennial
 Javascript Triennial Torah Readings
 
-[![Build Status](https://circleci.com/gh/hebcal/hebcal-triennial.svg?style=svg)](https://circleci.com/gh/hebcal/hebcal-triennial)
+[![Build Status](https://github.com/hebcal/hebcal-triennial/actions/workflows/node.js.yml/badge.svg)](https://github.com/hebcal/hebcal-triennial/actions/workflows/node.js.yml)
 
 “Many congregations pattern their weekly Torah reading cycle after a system
 similar to the one used in ancient Israel during the rabbinic period. In

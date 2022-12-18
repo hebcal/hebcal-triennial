@@ -1,6 +1,6 @@
 import {Event, HDate, HebrewCalendar, parshiot, flags, months} from '@hebcal/core';
 import triennialConfig from './triennial.json';
-import {BOOK, calculateNumVerses, clone, specialReadings,
+import {BOOK, calculateNumVerses, clone, specialReadings2,
   cloneHaftara, sumVerses, parshaToString,
   makeSummaryFromParts} from '@hebcal/leyning';
 import triennialHaft from './triennial-haft.json';
@@ -377,10 +377,10 @@ export function getTriennialForParshaHaShavua(ev) {
   if (typeof reading !== 'object') {
     throw new ReferenceError(`Can't load reading for ${name} in ${hyear} (year number ${yearNum})`);
   }
-  const aliyotMap = clone(reading.aliyot);
   // possibly replace 7th aliyah and/or maftir
-  const reason = {};
-  specialReadings(hd, false, aliyotMap, reason, parsha);
+  const special = specialReadings2(parsha, hd, false, reading.aliyot);
+  const reason = special.reason;
+  const aliyotMap = special.aliyot;
   Object.keys(reason).forEach((num) => {
     const aliyah = aliyotMap[num];
     if (typeof aliyah === 'object') {

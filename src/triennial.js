@@ -63,10 +63,11 @@ let triennialAliyot;
 /** Triennial Torah readings */
 export class Triennial {
   /**
-   * Builds a Triennial object
+   * Calculates Triennial schedule for entire Hebrew year
    * @param {number} [hebrewYear] Hebrew Year (default current year)
+   * @param {boolean} [il] Israel (default false)
    */
-  constructor(hebrewYear) {
+  constructor(hebrewYear, il=false) {
     hebrewYear = hebrewYear || new HDate().getFullYear();
     if (hebrewYear < 5744) {
       throw new RangeError(`Invalid Triennial year ${hebrewYear}`);
@@ -79,7 +80,7 @@ export class Triennial {
     this.sedraArray = [];
     this.bereshit = Array(4);
     for (let yr = 0; yr < 4; yr++) {
-      const sedra = HebrewCalendar.getSedra(this.startYear + yr, false);
+      const sedra = HebrewCalendar.getSedra(this.startYear + yr, il);
       const arr = sedra.getSedraArray();
       this.bereshit[yr] = this.sedraArray.length + arr.indexOf(0);
       this.sedraArray = this.sedraArray.concat(arr);
@@ -230,7 +231,7 @@ export class Triennial {
       const variation = variationKey + '.' + (yr + 1);
       const a = triennialAliyot[h][variation];
       if (!a) {
-        throw new Error(`can't find ${h} year ${yr} (variation ${variation})`);
+        throw new Error(`can't find ${h} variation ${variation} (year ${yr})`);
       }
       const aliyot = clone(a);
       // calculate numVerses for the subset of aliyot that don't cross chapter boundaries
@@ -337,25 +338,29 @@ const __cache = Object.create(null);
 /**
  * Calculates the 3-year readings for a given year
  * @param {number} year Hebrew year
+ * @param {boolean} [il] Israel
  * @return {Triennial}
  */
-export function getTriennial(year) {
+export function getTriennial(year, il=false) {
   const cycleStartYear = Triennial.getCycleStartYear(year);
-  const cached = __cache[cycleStartYear];
+  const prefix = il ? '1-' : '0-';
+  const key = prefix + cycleStartYear;
+  const cached = __cache[key];
   if (cached) {
     return cached;
   }
-  const tri = new Triennial(cycleStartYear);
-  __cache[cycleStartYear] = tri;
+  const tri = new Triennial(cycleStartYear, il);
+  __cache[key] = tri;
   return tri;
 }
 
 /**
  * Looks up the triennial leyning for this Parashat HaShavua
  * @param {Event} ev
+ * @param {boolean} [il] Israel
  * @return {TriennialAliyot} a map of aliyot 1-7 plus "M"
  */
-export function getTriennialForParshaHaShavua(ev) {
+export function getTriennialForParshaHaShavua(ev, il=false) {
   if (!ev instanceof Event) {
     throw new TypeError(`Bad event argument: ${ev}`);
   } else if (ev.getFlags() != flags.PARSHA_HASHAVUA) {
@@ -369,7 +374,7 @@ export function getTriennialForParshaHaShavua(ev) {
   // the tail end of previous 3-year cycle.
   const p1 = parsha[0];
   const hyear = (p1 === 'Vayeilech' && hd.getMonth() === months.TISHREI) ? hyear0 - 1 : hyear0;
-  const triennial = getTriennial(hyear);
+  const triennial = getTriennial(hyear, il);
   const startYear = triennial.getStartYear();
   const yearNum = hyear - startYear;
   const name = parshaToString(parsha); // untranslated

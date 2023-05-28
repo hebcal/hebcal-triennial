@@ -54,10 +54,10 @@ for (const [num, aliyah] of Object.entries(triReading)) {
 ## Functions
 
 <dl>
-<dt><a href="#getTriennial">getTriennial(year)</a> ⇒ <code><a href="#Triennial">Triennial</a></code></dt>
+<dt><a href="#getTriennial">getTriennial(year, [il])</a> ⇒ <code><a href="#Triennial">Triennial</a></code></dt>
 <dd><p>Calculates the 3-year readings for a given year</p>
 </dd>
-<dt><a href="#getTriennialForParshaHaShavua">getTriennialForParshaHaShavua(ev)</a> ⇒ <code><a href="#TriennialAliyot">TriennialAliyot</a></code></dt>
+<dt><a href="#getTriennialForParshaHaShavua">getTriennialForParshaHaShavua(ev, [il])</a> ⇒ <code><a href="#TriennialAliyot">TriennialAliyot</a></code></dt>
 <dd><p>Looks up the triennial leyning for this Parashat HaShavua</p>
 </dd>
 <dt><a href="#getTriennialHaftaraForHoliday">getTriennialHaftaraForHoliday(key, yearNum)</a> ⇒ <code>Object</code></dt>
@@ -81,7 +81,7 @@ Triennial Torah readings
 **Kind**: global class  
 
 * [Triennial](#Triennial)
-    * [new Triennial([hebrewYear])](#new_Triennial_new)
+    * [new Triennial([hebrewYear], [il])](#new_Triennial_new)
     * _instance_
         * [.getReading(parsha, yearNum)](#Triennial+getReading) ⇒ <code>Object.&lt;string, Aliyah&gt;</code>
         * [.getStartYear()](#Triennial+getStartYear) ⇒ <code>number</code>
@@ -92,13 +92,14 @@ Triennial Torah readings
 
 <a name="new_Triennial_new"></a>
 
-### new Triennial([hebrewYear])
-Builds a Triennial object
+### new Triennial([hebrewYear], [il])
+Calculates Triennial schedule for entire Hebrew year
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| [hebrewYear] | <code>number</code> | Hebrew Year (default current year) |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [hebrewYear] | <code>number</code> |  | Hebrew Year (default current year) |
+| [il] | <code>boolean</code> | <code>false</code> | Israel (default false) |
 
 <a name="Triennial+getReading"></a>
 
@@ -143,26 +144,28 @@ Returns Hebrew year that this 3-year triennial cycle began
 
 <a name="getTriennial"></a>
 
-## getTriennial(year) ⇒ [<code>Triennial</code>](#Triennial)
+## getTriennial(year, [il]) ⇒ [<code>Triennial</code>](#Triennial)
 Calculates the 3-year readings for a given year
 
 **Kind**: global function  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| year | <code>number</code> | Hebrew year |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| year | <code>number</code> |  | Hebrew year |
+| [il] | <code>boolean</code> | <code>false</code> | Israel |
 
 <a name="getTriennialForParshaHaShavua"></a>
 
-## getTriennialForParshaHaShavua(ev) ⇒ [<code>TriennialAliyot</code>](#TriennialAliyot)
+## getTriennialForParshaHaShavua(ev, [il]) ⇒ [<code>TriennialAliyot</code>](#TriennialAliyot)
 Looks up the triennial leyning for this Parashat HaShavua
 
 **Kind**: global function  
 **Returns**: [<code>TriennialAliyot</code>](#TriennialAliyot) - a map of aliyot 1-7 plus "M"  
 
-| Param | Type |
-| --- | --- |
-| ev | <code>Event</code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| ev | <code>Event</code> |  |  |
+| [il] | <code>boolean</code> | <code>false</code> | Israel |
 
 <a name="getTriennialHaftaraForHoliday"></a>
 

@@ -27,7 +27,12 @@ declare module '@hebcal/triennial' {
      * Triennial Torah readings
      */
     export class Triennial {
-        constructor(hebrewYear: number);
+        /**
+         * Calculates Triennial schedule for entire Hebrew year
+         * @param hebrewYear - Hebrew Year (default current year)
+         * @param il - Israel (default false)
+         */
+        constructor(hebrewYear: number, il?: boolean);
         getReading(parsha: string, yearNum: number): TriennialAliyot;
         getStartYear(): number;
         debug(): string;
@@ -46,15 +51,16 @@ declare module '@hebcal/triennial' {
     /**
      * Calculates the 3-year readings for a given year
      * @param year - Hebrew year
+     * @param il - Israel (default false)
      */
-    export function getTriennial(year: number): Triennial;
+    export function getTriennial(year: number, il?: boolean): Triennial;
 
     /**
      * Looks up triennial leyning for a regular Shabbat parsha.
      * @param ev - the Hebcal event associated with this parsha
      * @returns a map of aliyot 1-7 plus "M"
      */
-    export function getTriennialForParshaHaShavua(ev: Event): TriennialAliyot;
+    export function getTriennialForParshaHaShavua(ev: Event, il?: boolean): TriennialAliyot;
 
     export function getTriennialHaftaraForHoliday(holiday: string, yearNum: number): any;
 

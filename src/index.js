@@ -2,6 +2,6 @@ export {
   Triennial,
   getTriennialForParshaHaShavua,
   getTriennial,
-  getTriennialHaftaraForHoliday,
 } from './triennial';
+export {getTriennialHaftara, getTriennialHaftaraForHoliday} from './haftara';
 export {writeTriennialCsv} from './csv';

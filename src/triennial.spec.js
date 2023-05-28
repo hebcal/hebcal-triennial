@@ -1,6 +1,7 @@
 import test from 'ava';
 import {HebrewCalendar, HDate, months, flags} from '@hebcal/core';
-import {Triennial, getTriennialForParshaHaShavua, getTriennialHaftaraForHoliday} from './triennial';
+import {Triennial, getTriennialForParshaHaShavua} from './triennial';
+import {getTriennialHaftaraForHoliday} from './haftara';
 import {formatAliyahWithBook} from '@hebcal/leyning';
 
 test('triennial', (t) => {

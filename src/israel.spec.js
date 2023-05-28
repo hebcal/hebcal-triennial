@@ -27,7 +27,6 @@ test('debug', (t) => {
   Matot-Masei TTT (Y)
   Nitzavim-Vayeilech STT (Y)
 `;
-  console.log(actual5789);
   t.is(actual5789, expected5789);
 });
 

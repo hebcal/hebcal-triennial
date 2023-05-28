@@ -2,7 +2,8 @@ import {HebrewCalendar, flags} from '@hebcal/core';
 import {getLeyningForParshaHaShavua, getLeyningForHoliday,
   getParshaDates, writeHolidayMincha,
   getLeyningKeyForEvent, writeCsvLines} from '@hebcal/leyning';
-import {getTriennialForParshaHaShavua, Triennial} from './triennial';
+import {Triennial} from './triennial';
+import {getTriennialForParshaHaShavua} from './parshaHaShavua';
 import {getTriennialHaftaraForHoliday} from './haftara';
 
 /**

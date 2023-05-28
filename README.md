@@ -57,11 +57,11 @@ for (const [num, aliyah] of Object.entries(triReading)) {
 <dt><a href="#getTriennial">getTriennial(year, [il])</a> ⇒ <code><a href="#Triennial">Triennial</a></code></dt>
 <dd><p>Calculates the 3-year readings for a given year</p>
 </dd>
-<dt><a href="#getTriennialForParshaHaShavua">getTriennialForParshaHaShavua(ev, [il])</a> ⇒ <code><a href="#TriennialAliyot">TriennialAliyot</a></code></dt>
-<dd><p>Looks up the triennial leyning for this Parashat HaShavua</p>
-</dd>
 <dt><a href="#getTriennialHaftaraForHoliday">getTriennialHaftaraForHoliday(key, yearNum)</a> ⇒ <code>Object</code></dt>
 <dd><p>Looks up the alternative triennial Haftara for a holiday</p>
+</dd>
+<dt><a href="#getTriennialForParshaHaShavua">getTriennialForParshaHaShavua(ev, [il])</a> ⇒ <code><a href="#TriennialAliyot">TriennialAliyot</a></code></dt>
+<dd><p>Looks up the triennial leyning for this Parashat HaShavua</p>
 </dd>
 </dl>
 
@@ -154,6 +154,18 @@ Calculates the 3-year readings for a given year
 | year | <code>number</code> |  | Hebrew year |
 | [il] | <code>boolean</code> | <code>false</code> | Israel |
 
+<a name="getTriennialHaftaraForHoliday"></a>
+
+## getTriennialHaftaraForHoliday(key, yearNum) ⇒ <code>Object</code>
+Looks up the alternative triennial Haftara for a holiday
+
+**Kind**: global function  
+
+| Param | Type |
+| --- | --- |
+| key | <code>string</code> | 
+| yearNum | <code>number</code> | 
+
 <a name="getTriennialForParshaHaShavua"></a>
 
 ## getTriennialForParshaHaShavua(ev, [il]) ⇒ [<code>TriennialAliyot</code>](#TriennialAliyot)
@@ -166,18 +178,6 @@ Looks up the triennial leyning for this Parashat HaShavua
 | --- | --- | --- | --- |
 | ev | <code>Event</code> |  |  |
 | [il] | <code>boolean</code> | <code>false</code> | Israel |
-
-<a name="getTriennialHaftaraForHoliday"></a>
-
-## getTriennialHaftaraForHoliday(key, yearNum) ⇒ <code>Object</code>
-Looks up the alternative triennial Haftara for a holiday
-
-**Kind**: global function  
-
-| Param | Type |
-| --- | --- |
-| key | <code>string</code> | 
-| yearNum | <code>number</code> | 
 
 <a name="TriennialAliyot"></a>
 

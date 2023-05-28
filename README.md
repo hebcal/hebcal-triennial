@@ -63,6 +63,8 @@ for (const [num, aliyah] of Object.entries(triReading)) {
 <dt><a href="#getTriennialForParshaHaShavua">getTriennialForParshaHaShavua(ev, [il])</a> ⇒ <code><a href="#TriennialAliyot">TriennialAliyot</a></code></dt>
 <dd><p>Looks up the triennial leyning for this Parashat HaShavua</p>
 </dd>
+<dt><a href="#writeTriennialCsv">writeTriennialCsv(stream, hyear, [il])</a></dt>
+<dd></dd>
 </dl>
 
 ## Typedefs
@@ -178,6 +180,17 @@ Looks up the triennial leyning for this Parashat HaShavua
 | --- | --- | --- | --- |
 | ev | <code>Event</code> |  |  |
 | [il] | <code>boolean</code> | <code>false</code> | Israel |
+
+<a name="writeTriennialCsv"></a>
+
+## writeTriennialCsv(stream, hyear, [il])
+**Kind**: global function  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| stream | <code>fs.WriteStream</code> |  | 
+| hyear | <code>number</code> |  | 
+| [il] | <code>boolean</code> | <code>false</code> | 
 
 <a name="TriennialAliyot"></a>
 

@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 import test from 'ava';
 import {Writable} from 'stream';
-import {HDate, HolidayEvent, RoshChodeshEvent, ParshaEvent, months, flags} from '@hebcal/core';
+import {HDate, HolidayEvent, ParshaEvent, months, flags} from '@hebcal/core';
 import {writeTriennialEvent} from './csv';
 
 class StringWritable extends Writable {
@@ -91,6 +91,27 @@ test('writeTriennialEvent-holiday-alt-haftara', (t) => {
     '06-Oct-2028,"Sukkot II","maf","Numbers 29:12-29:16",5',
     '06-Oct-2028,"Sukkot II","Haftara","I Kings 8:2-21",20',
     '06-Oct-2028,"Sukkot II","Alternate Haftara","I Kings 8:2-13",12',
+    '', ''];
+  t.deepEqual(lines, expected);
+});
+
+test('writeTriennialEvent-il', (t) => {
+  const hd = new HDate(7, 'Sivan', 5783);
+  const ev = new ParshaEvent(hd, ['Nasso'], true);
+  const stream = new StringWritable();
+  writeTriennialEvent(stream, ev, true);
+  const lines = stream.toString().split('\r\n');
+  const expected = [
+    '27-May-2023,"Nasso",1,"Numbers 4:21-4:24",4',
+    '27-May-2023,"Nasso",2,"Numbers 4:25-4:28",4',
+    '27-May-2023,"Nasso",3,"Numbers 4:29-4:33",5',
+    '27-May-2023,"Nasso",4,"Numbers 4:34-4:37",4',
+    '27-May-2023,"Nasso",5,"Numbers 4:38-4:49",12',
+    '27-May-2023,"Nasso",6,"Numbers 5:1-5:4",4',
+    '27-May-2023,"Nasso",7,"Numbers 5:5-5:10",6',
+    '27-May-2023,"Nasso","maf","Numbers 5:8-5:10",3',
+    '27-May-2023,"Nasso","Haftara","Judges 13:2-25",24',
+    '27-May-2023,"Nasso","Alternate Haftara","Joshua 6:5-14; 6:12",11',
     '', ''];
   t.deepEqual(lines, expected);
 });

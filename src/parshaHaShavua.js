@@ -32,7 +32,7 @@ export function getTriennialForParshaHaShavua(ev, il = false) {
     throw new ReferenceError(`Can't load reading for ${name} in ${hyear} (year number ${yearNum})`);
   }
   // possibly replace 7th aliyah and/or maftir
-  const special = specialReadings2(parsha, hd, false, reading.aliyot);
+  const special = specialReadings2(parsha, hd, il, reading.aliyot);
   const reason = special.reason;
   const aliyotMap = special.aliyot;
   Object.keys(reason).forEach((num) => {

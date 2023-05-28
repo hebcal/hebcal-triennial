@@ -7,24 +7,24 @@ import {getTriennialForParshaHaShavua} from './parshaHaShavua';
 import {getTriennialHaftaraForHoliday} from './haftara';
 
 /**
- * @private
  * @param {fs.WriteStream} stream
  * @param {number} hyear
+ * @param {boolean} [il]
  */
-export function writeTriennialCsv(stream, hyear) {
+export function writeTriennialCsv(stream, hyear, il=false) {
   const events0 = HebrewCalendar.calendar({
     year: hyear,
     isHebrewYear: true,
     numYears: 3,
     sedrot: true,
-    il: false,
+    il: il,
   });
   const events = events0.filter((ev) => ev.getDesc() !== 'Rosh Chodesh Tevet');
   const parshaDates = getParshaDates(events);
   stream.write('"Date","Parashah","Aliyah","Triennial Reading","Verses"\r\n');
   events.forEach((ev) => {
     if (ev.getFlags() === flags.PARSHA_HASHAVUA || !parshaDates[ev.getDate().toString()]) {
-      writeTriennialEvent(stream, ev);
+      writeTriennialEvent(stream, ev, il);
     }
   });
 }
@@ -33,15 +33,16 @@ export function writeTriennialCsv(stream, hyear) {
  * @private
  * @param {fs.WriteStream} stream
  * @param {Event} ev
+ * @param {boolean} il
  */
-export function writeTriennialEvent(stream, ev) {
+export function writeTriennialEvent(stream, ev, il) {
   if (ignore(ev)) {
     return;
   }
   if (ev.getFlags() === flags.PARSHA_HASHAVUA) {
-    writeTriennialEventParsha(stream, ev);
+    writeTriennialEventParsha(stream, ev, il);
   } else {
-    writeTriennialEventHoliday(stream, ev);
+    writeTriennialEventHoliday(stream, ev, il);
   }
 }
 
@@ -49,9 +50,9 @@ export function writeTriennialEvent(stream, ev) {
  * @private
  * @param {fs.WriteStream} stream
  * @param {Event} ev
+ * @param {boolean} il
  */
-function writeTriennialEventHoliday(stream, ev) {
-  const il = false;
+function writeTriennialEventHoliday(stream, ev, il) {
   const reading = getLeyningForHoliday(ev, il);
   if (reading) {
     const key = getLeyningKeyForEvent(ev, il);
@@ -71,11 +72,11 @@ function writeTriennialEventHoliday(stream, ev) {
  * @private
  * @param {fs.WriteStream} stream
  * @param {Event} ev
+ * @param {boolean} il
  */
-function writeTriennialEventParsha(stream, ev) {
-  const triReading = getTriennialForParshaHaShavua(ev, true);
+function writeTriennialEventParsha(stream, ev, il) {
+  const triReading = getTriennialForParshaHaShavua(ev, il);
   if (triReading) {
-    const il = false;
     const reading = getLeyningForParshaHaShavua(ev, il);
     reading.fullkriyah = triReading.aliyot;
     reading.triHaftara = triReading.haftara;

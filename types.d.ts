@@ -64,5 +64,5 @@ declare module '@hebcal/triennial' {
 
     export function getTriennialHaftaraForHoliday(holiday: string, yearNum: number): any;
 
-    export function writeTriennialCsv(stream: WriteStream, hyear: number): void;
+    export function writeTriennialCsv(stream: WriteStream, hyear: number, il?: boolean): void;
 }

@@ -1,7 +1,8 @@
 import test from 'ava';
-import {HDate} from '@hebcal/core';
+import {HDate, ParshaEvent} from '@hebcal/core';
 import {makeLeyningParts, makeSummaryFromParts} from '@hebcal/leyning';
 import {Triennial} from './triennial';
+import {getTriennialForParshaHaShavua} from './parshaHaShavua';
 
 test('debug', (t) => {
   const tri5774 = new Triennial(5774, true);
@@ -127,4 +128,21 @@ test('multi', (t) => {
     t.is(typeof str, 'string');
   }
   t.pass();
+});
+
+test('getTriennialForParshaHaShavua', (t) => {
+  const hd = new HDate(7, 'Sivan', 5783);
+  const pe = new ParshaEvent(hd, ['Nasso'], true);
+  const reading = getTriennialForParshaHaShavua(pe, true);
+  const expected = {
+    '1': {k: 'Numbers', b: '4:21', e: '4:24', v: 4},
+    '2': {k: 'Numbers', b: '4:25', e: '4:28', v: 4},
+    '3': {k: 'Numbers', b: '4:29', e: '4:33', v: 5},
+    '4': {k: 'Numbers', b: '4:34', e: '4:37', v: 4},
+    '5': {k: 'Numbers', b: '4:38', e: '4:49', v: 12},
+    '6': {k: 'Numbers', b: '5:1', e: '5:4', v: 4},
+    '7': {k: 'Numbers', b: '5:5', e: '5:10', v: 6},
+    'M': {k: 'Numbers', b: '5:8', e: '5:10', v: 3},
+  };
+  t.deepEqual(reading.aliyot, expected);
 });

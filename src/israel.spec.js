@@ -1,5 +1,6 @@
 import test from 'ava';
 import {HDate} from '@hebcal/core';
+import {makeLeyningParts, makeSummaryFromParts} from '@hebcal/leyning';
 import {Triennial} from './triennial';
 
 test('debug', (t) => {
@@ -52,6 +53,25 @@ test('Matot-Masei STS', (t) => {
     date: new HDate(735797), // day: 2, month: 5, year: 5775
   };
   t.deepEqual(r2, expected);
+
+  const matot1 = tri.getReading('Matot', 0);
+  const masei1 = tri.getReading('Masei', 0);
+  const matot3 = tri.getReading('Matot', 2);
+  const masei3 = tri.getReading('Masei', 2);
+  const summary = [
+    makeSummaryFromParts(makeLeyningParts(matot1.aliyot)),
+    makeSummaryFromParts(makeLeyningParts(masei1.aliyot)),
+    makeSummaryFromParts(makeLeyningParts(r2.aliyot)),
+    makeSummaryFromParts(makeLeyningParts(matot3.aliyot)),
+    makeSummaryFromParts(makeLeyningParts(masei3.aliyot)),
+  ];
+  t.deepEqual(summary, [
+    'Numbers 30:2-31:54',
+    'Numbers 33:1-49',
+    'Numbers 32:1-33:49',
+    'Numbers 31:1-32:42',
+    'Numbers 33:50-36:13',
+  ]);
 });
 
 test('Behar-Bechukotai SSS', (t) => {
@@ -62,6 +82,22 @@ test('Behar-Bechukotai SSS', (t) => {
   t.is(r1.readSeparately, true);
   t.is(r2.readSeparately, true);
   t.is(r3.readSeparately, true);
+
+  const actualP1 = [];
+  for (let i = 0; i < 3; i++) {
+    const reading = tri.getReading('Behar', i);
+    actualP1.push(makeSummaryFromParts(makeLeyningParts(reading.aliyot)));
+  }
+  const expectedP1 = ['Leviticus 25:1-28', 'Leviticus 25:1-28', 'Leviticus 25:29-26:2'];
+  t.deepEqual(actualP1, expectedP1);
+
+  const actualP2 = [];
+  for (let i = 0; i < 3; i++) {
+    const reading = tri.getReading('Bechukotai', i);
+    actualP2.push(makeSummaryFromParts(makeLeyningParts(reading.aliyot)));
+  }
+  const expectedP2 = ['Leviticus 26:3-27:15', 'Leviticus 27:1-34', 'Leviticus 27:1-34'];
+  t.deepEqual(actualP2, expectedP2);
 });
 
 test('Behar-Bechukotai SST', (t) => {

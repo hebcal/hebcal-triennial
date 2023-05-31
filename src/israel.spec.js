@@ -119,6 +119,24 @@ test('Behar-Bechukotai TSS', (t) => {
   t.is(r1.readSeparately, undefined);
   t.is(r2.readSeparately, true);
   t.is(r3.readSeparately, true);
+
+  t.is('Leviticus 25:1-38', makeSummaryFromParts(makeLeyningParts(r1.aliyot)));
+
+  const actualP1 = [];
+  for (let i = 1; i < 3; i++) {
+    const reading = tri.getReading('Behar', i);
+    actualP1.push(makeSummaryFromParts(makeLeyningParts(reading.aliyot)));
+  }
+  const expectedP1 = ['Leviticus 25:39-26:46', 'Leviticus 25:29-26:2'];
+  t.deepEqual(actualP1, expectedP1);
+
+  const actualP2 = [];
+  for (let i = 1; i < 3; i++) {
+    const reading = tri.getReading('Bechukotai', i);
+    actualP2.push(makeSummaryFromParts(makeLeyningParts(reading.aliyot)));
+  }
+  const expectedP2 = ['Leviticus 26:3-27:15', 'Leviticus 27:1-34'];
+  t.deepEqual(actualP2, expectedP2);
 });
 
 test('multi', (t) => {

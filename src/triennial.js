@@ -175,14 +175,30 @@ export class Triennial {
   }
 
   /**
-   * @return {string}
+   * @private
+   * @return {Object.<string, string[]>}
    */
-  debug() {
-    let str = `Triennial cycle started year ${this.startYear}\n`;
+  getThreeYearPatterns() {
+    const result = {};
     doubled.forEach((id) => {
       const pattern = this.getThreeYearPattern(id);
       const name = getDoubledName(id);
       const variation = this.variationOptions[name];
+      result[name] = [pattern, variation];
+    });
+    return result;
+  }
+
+  /**
+   * @return {string}
+   */
+  debug() {
+    let str = `Triennial cycle started year ${this.startYear}\n`;
+    const doubledPatterns = this.getThreeYearPatterns();
+    Object.keys(doubledPatterns).forEach((name) => {
+      const arr = doubledPatterns[name];
+      const pattern = arr[0];
+      const variation = arr[1];
       str += `  ${name} ${pattern} (${variation})\n`;
     });
     return str;

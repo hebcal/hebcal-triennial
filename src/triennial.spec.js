@@ -43,7 +43,7 @@ test('triennial', (t) => {
 });
 
 test('multi', (t) => {
-  for (let year = 5744; year <= 6000; year += 3) {
+  for (let year = 5744; year <= 8744; year += 3) {
     try {
       const tri = new Triennial(year);
       for (let yearNum = 0; yearNum <= 2; yearNum++) {

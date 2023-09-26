@@ -11,6 +11,7 @@ import {BOOK, calculateNumVerses, clone} from '@hebcal/leyning';
  * @property {boolean} [readSeparately] - true if a double parsha is read separately in year `yearNum`
  * @property {Date} [date1] - Shabbat date of the first part of a read-separately aliyah pair
  * @property {Date} [date2] - Shabbat date of the second part of a read-separately aliyah pair
+ * @property {boolean} [fullParsha] - true if we read the entire parsha
  */
 
 const VEZOT_HABERAKHAH = 'Vezot Haberakhah';
@@ -93,13 +94,16 @@ export class Triennial {
   /**
    * @param {string} parsha parsha name ("Bereshit" or "Achrei Mot-Kedoshim")
    * @param {number} yearNum 0 through 2 for which year of Triennial cycle
-   * @return {Object<string,Aliyah>} a map of aliyot 1-7 plus "M"
+   * @return {TriennialAliyot} result, including a map of aliyot 1-7 plus "M"
    */
   getReading(parsha, yearNum) {
     // don't use clone() here because we want to preserve HDate objects
     const reading = shallowCopy({}, this.readings[parsha][yearNum]);
     if (reading.aliyot) {
       Object.values(reading.aliyot).map((aliyah) => calculateNumVerses(aliyah));
+    }
+    if (triennialConfig[parsha].fullParsha) {
+      reading.fullParsha = true;
     }
     return reading;
   }

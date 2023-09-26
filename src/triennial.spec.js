@@ -117,6 +117,7 @@ test('Vezot Haberakhah', (t) => {
       '7': {k: 'Deuteronomy', b: '34:1', e: '34:12', v: 12},
     },
     date: new HDate(23, 7, 5780),
+    fullParsha: true,
   };
   t.deepEqual(reading, expected);
 });

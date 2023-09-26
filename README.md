@@ -85,7 +85,7 @@ Triennial Torah readings
 * [Triennial](#Triennial)
     * [new Triennial([hebrewYear], [il])](#new_Triennial_new)
     * _instance_
-        * [.getReading(parsha, yearNum)](#Triennial+getReading) ⇒ <code>Object.&lt;string, Aliyah&gt;</code>
+        * [.getReading(parsha, yearNum)](#Triennial+getReading) ⇒ [<code>TriennialAliyot</code>](#TriennialAliyot)
         * [.getStartYear()](#Triennial+getStartYear) ⇒ <code>number</code>
         * [.debug()](#Triennial+debug) ⇒ <code>string</code>
     * _static_
@@ -105,9 +105,9 @@ Calculates Triennial schedule for entire Hebrew year
 
 <a name="Triennial+getReading"></a>
 
-### triennial.getReading(parsha, yearNum) ⇒ <code>Object.&lt;string, Aliyah&gt;</code>
+### triennial.getReading(parsha, yearNum) ⇒ [<code>TriennialAliyot</code>](#TriennialAliyot)
 **Kind**: instance method of [<code>Triennial</code>](#Triennial)  
-**Returns**: <code>Object.&lt;string, Aliyah&gt;</code> - a map of aliyot 1-7 plus "M"  
+**Returns**: [<code>TriennialAliyot</code>](#TriennialAliyot) - result, including a map of aliyot 1-7 plus "M"  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -208,4 +208,5 @@ Represents triennial aliyot for a given date
 | [readSeparately] | <code>boolean</code> | true if a double parsha is read separately in year `yearNum` |
 | [date1] | <code>Date</code> | Shabbat date of the first part of a read-separately aliyah pair |
 | [date2] | <code>Date</code> | Shabbat date of the second part of a read-separately aliyah pair |
+| [fullParsha] | <code>boolean</code> | true if we read the entire parsha |
 

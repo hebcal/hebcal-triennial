@@ -506,6 +506,7 @@
 "Yitro":{
   "book":2,
   "descr":"full parashah with Ten Commandments every year",
+  "fullParsha":true,
   "variations":{
   "Y.1":{
    "1":["18:1","18:12"],
@@ -1708,6 +1709,7 @@
 "Nitzavim":{
   "book":5,
   "descr":"When these Sidrot are not combined, they should each be read in their entirety.",
+  "fullParsha":true,
   "variations":{
   "Y.1":{
    "1":["29:9","29:11"],
@@ -1723,6 +1725,7 @@
 "Vayeilech":{
   "book":5,
   "descr":"When these Sidrot are not combined, they should each be read in their entirety.",
+  "fullParsha":true,
   "variations":{
   "Y.1":{
    "1":["31:1","31:3"],
@@ -1738,6 +1741,7 @@
 "Ha'azinu":{
   "book":5,
   "descr":"every year",
+  "fullParsha":true,
   "variations":{
   "Y.1":{
    "1":["32:1","32:6"],
@@ -1753,6 +1757,7 @@
 "Vezot Haberakhah":{
   "book":5,
   "descr":"האזינו-וזאת הברכה should both be read in their entirety due to their brief length",
+  "fullParsha":true,
   "variations":{
   "Y.1":{
    "1":["33:1","33:7"],

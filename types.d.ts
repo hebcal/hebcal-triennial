@@ -21,6 +21,8 @@ declare module '@hebcal/triennial' {
         date1?: Date;
         /** Shabbat date of the second part of a read-separately aliyah pair */
         date2?: Date;
+        /** true if we read the entire parsha */
+        fullParsha?: boolean;
     };
 
     /**

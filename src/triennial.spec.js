@@ -152,3 +152,19 @@ test('Triennial.debug', (t) => {
   ];
   t.deepEqual(lines2, expected2);
 });
+
+test('Chukat-Balak 5783', (t) => {
+  const tri = new Triennial(5783);
+  const reading = tri.getReading('Chukat-Balak', 0);
+  const expected = {
+    '1': {k: 'Numbers', b: '19:1', e: '19:9', v: 9},
+    '2': {k: 'Numbers', b: '19:10', e: '19:17', v: 8},
+    '3': {k: 'Numbers', b: '19:18', e: '20:6', v: 11},
+    '4': {k: 'Numbers', b: '20:7', e: '20:13', v: 7},
+    '5': {k: 'Numbers', b: '20:14', e: '20:21', v: 8},
+    '6': {k: 'Numbers', b: '20:22', e: '21:9', v: 17},
+    '7': {k: 'Numbers', b: '21:10', e: '21:20', v: 11},
+    'M': {k: 'Numbers', b: '21:17', e: '21:20', v: 4},
+  };
+  t.deepEqual(reading.aliyot, expected);
+});

@@ -1,7 +1,7 @@
 import {Event, flags, months} from '@hebcal/core';
 import {specialReadings2, parshaToString} from '@hebcal/leyning';
 import {getTriennialHaftara} from './haftara';
-import {getTriennial, shallowCopy} from './triennial';
+import {getTriennial} from './triennial';
 
 /**
  * Looks up the triennial leyning for this Parashat HaShavua
@@ -35,15 +35,15 @@ export function getTriennialForParshaHaShavua(ev, il = false) {
   const special = specialReadings2(parsha, hd, il, reading.aliyot);
   const reason = special.reason;
   const aliyotMap = special.aliyot;
-  Object.keys(reason).forEach((num) => {
+  for (const [num, str] of Object.entries(reason)) {
     const aliyah = aliyotMap[num];
     if (typeof aliyah === 'object') {
-      aliyah.reason = reason[num];
+      aliyah.reason = str;
     }
-  });
+  }
   reading.yearNum = yearNum;
   reading.aliyot = aliyotMap;
   const triHaft = getTriennialHaftara(parsha, yearNum);
-  shallowCopy(reading, triHaft);
+  Object.assign(reading, triHaft);
   return reading;
 }

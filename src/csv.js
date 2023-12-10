@@ -22,11 +22,11 @@ export function writeTriennialCsv(stream, hyear, il=false) {
   const events = events0.filter((ev) => ev.getDesc() !== 'Rosh Chodesh Tevet');
   const parshaDates = getParshaDates(events);
   stream.write('"Date","Parashah","Aliyah","Triennial Reading","Verses"\r\n');
-  events.forEach((ev) => {
-    if (ev.getFlags() === flags.PARSHA_HASHAVUA || !parshaDates[ev.getDate().toString()]) {
+  for (const ev of events) {
+    if (ev.getFlags() === flags.PARSHA_HASHAVUA || !parshaDates.has(ev.getDate().toString())) {
       writeTriennialEvent(stream, ev, il);
     }
-  });
+  }
 }
 
 /**

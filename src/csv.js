@@ -23,7 +23,7 @@ export function writeTriennialCsv(stream, hyear, il=false) {
   const parshaDates = getParshaDates(events);
   stream.write('"Date","Parashah","Aliyah","Triennial Reading","Verses"\r\n');
   for (const ev of events) {
-    if (ev.getFlags() === flags.PARSHA_HASHAVUA || !parshaDates.has(ev.getDate().toString())) {
+    if (ev.getFlags() === flags.PARSHA_HASHAVUA || !parshaDates[ev.getDate().toString()]) {
       writeTriennialEvent(stream, ev, il);
     }
   }

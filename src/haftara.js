@@ -1,5 +1,5 @@
 import {cloneHaftara, sumVerses, makeSummaryFromParts} from '@hebcal/leyning';
-import triennialHaft from './triennial-haft.json';
+import triennialHaft from './triennial-haft.json.js';
 
 /**
  * Looks up the alternative triennial Haftara for a given parsha

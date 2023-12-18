@@ -1,11 +1,18 @@
 {
   "name": "@hebcal/triennial",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Javascript Triennial Torah Readings",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
+  "type": "module",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
+  },
   "scripts": {
-    "build": "rollup -c",
+    "build:rollup": "rollup -c",
+    "build:json2js": "for f in src/*.json; do echo 'export default' > $f.js && cat $f >> $f.js; done",
+    "build": "npm run build:json2js && npm run build:rollup",
     "prepublish": "npm run build",
     "readme": "npx jsdoc2md dist/index.js",
     "pretest": "npm run build",
@@ -22,8 +29,8 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-triennial#readme",
   "dependencies": {
-    "@hebcal/core": "^5.0.1",
-    "@hebcal/leyning": "^8.1.0"
+    "@hebcal/core": "^5.0.3",
+    "@hebcal/leyning": "^8.1.1"
   },
   "typings": "types.d.ts",
   "files": [
@@ -34,16 +41,7 @@
   "bin": {
     "triennial-csv": "bin/triennial-csv"
   },
-  "ava": {
-    "require": [
-      "@babel/register"
-    ]
-  },
   "devDependencies": {
-    "@babel/core": "^7.23.6",
-    "@babel/preset-env": "^7.23.6",
-    "@babel/register": "^7.22.15",
-    "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -54,6 +52,6 @@
     "eslint-config-google": "^0.14.0",
     "jsdoc": "^4.0.2",
     "jsdoc-to-markdown": "^8.0.0",
-    "rollup": "^4.9.0"
+    "rollup": "^4.9.1"
   }
 }

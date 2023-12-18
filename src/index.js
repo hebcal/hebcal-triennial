@@ -1,4 +1,4 @@
-export {Triennial, getTriennial} from './triennial';
-export {getTriennialForParshaHaShavua} from './parshaHaShavua';
-export {getTriennialHaftaraForHoliday} from './haftara';
-export {writeTriennialCsv} from './csv';
+export {Triennial, getTriennial} from './triennial.js';
+export {getTriennialForParshaHaShavua} from './parshaHaShavua.js';
+export {getTriennialHaftaraForHoliday} from './haftara.js';
+export {writeTriennialCsv} from './csv.js';

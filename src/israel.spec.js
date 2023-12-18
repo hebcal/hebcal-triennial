@@ -1,8 +1,8 @@
 import test from 'ava';
 import {HDate, ParshaEvent} from '@hebcal/core';
 import {makeLeyningParts, makeSummaryFromParts} from '@hebcal/leyning';
-import {Triennial} from './triennial';
-import {getTriennialForParshaHaShavua} from './parshaHaShavua';
+import {Triennial} from './triennial.js';
+import {getTriennialForParshaHaShavua} from './parshaHaShavua.js';
 
 test('debug', (t) => {
   const tri5774 = new Triennial(5774, true);

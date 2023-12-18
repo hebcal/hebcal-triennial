@@ -2,9 +2,9 @@ import {HebrewCalendar, flags} from '@hebcal/core';
 import {getLeyningForParshaHaShavua, getLeyningForHoliday,
   getParshaDates, writeHolidayMincha,
   getLeyningKeyForEvent, writeCsvLines} from '@hebcal/leyning';
-import {Triennial} from './triennial';
-import {getTriennialForParshaHaShavua} from './parshaHaShavua';
-import {getTriennialHaftaraForHoliday} from './haftara';
+import {Triennial} from './triennial.js';
+import {getTriennialForParshaHaShavua} from './parshaHaShavua.js';
+import {getTriennialHaftaraForHoliday} from './haftara.js';
 
 /**
  * @param {fs.WriteStream} stream

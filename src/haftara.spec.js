@@ -1,5 +1,5 @@
 import test from 'ava';
-import {getTriennialHaftaraForHoliday} from './haftara';
+import {getTriennialHaftaraForHoliday} from './haftara.js';
 
 test('getTriennialHaftaraForHoliday', (t) => {
   const pesachI = getTriennialHaftaraForHoliday('Pesach I', 0);

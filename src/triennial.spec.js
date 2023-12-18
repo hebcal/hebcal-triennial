@@ -1,6 +1,6 @@
 import test from 'ava';
 import {HDate} from '@hebcal/core';
-import {Triennial} from './triennial';
+import {Triennial} from './triennial.js';
 
 test('triennial', (t) => {
   const tri = new Triennial(5777);

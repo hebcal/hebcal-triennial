@@ -2,7 +2,7 @@
 import test from 'ava';
 import {Writable} from 'stream';
 import {HDate, HolidayEvent, ParshaEvent, months, flags} from '@hebcal/core';
-import {writeTriennialEvent} from './csv';
+import {writeTriennialEvent} from './csv.js';
 
 class StringWritable extends Writable {
   constructor(options) {

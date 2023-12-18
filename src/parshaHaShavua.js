@@ -1,7 +1,7 @@
 import {Event, flags, months} from '@hebcal/core';
 import {specialReadings2, parshaToString} from '@hebcal/leyning';
-import {getTriennialHaftara} from './haftara';
-import {getTriennial} from './triennial';
+import {getTriennialHaftara} from './haftara.js';
+import {getTriennial} from './triennial.js';
 
 /**
  * Looks up the triennial leyning for this Parashat HaShavua

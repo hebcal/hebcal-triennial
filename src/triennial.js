@@ -1,5 +1,5 @@
 import {HDate, HebrewCalendar, parshiot, months} from '@hebcal/core';
-import triennialConfig from './triennial.json';
+import triennialConfig from './triennial.json.js';
 import {BOOK, calculateNumVerses, clone} from '@hebcal/leyning';
 
 /**

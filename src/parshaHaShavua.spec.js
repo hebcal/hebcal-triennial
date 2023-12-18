@@ -1,6 +1,6 @@
 import test from 'ava';
 import {HebrewCalendar, HDate, months, flags} from '@hebcal/core';
-import {getTriennialForParshaHaShavua} from './parshaHaShavua';
+import {getTriennialForParshaHaShavua} from './parshaHaShavua.js';
 import {formatAliyahWithBook} from '@hebcal/leyning';
 
 test('getTriennialForParshaHaShavua', (t) => {

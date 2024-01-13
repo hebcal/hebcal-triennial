@@ -32,7 +32,8 @@ test('writeTriennialEvent-parsha', (t) => {
     '30-Apr-2022,"Achrei Mot",6,"Leviticus 18:22-18:25",4',
     '30-Apr-2022,"Achrei Mot",7,"Leviticus 18:26-18:30",5',
     '30-Apr-2022,"Achrei Mot","maf","Leviticus 18:26-18:30",5',
-    '30-Apr-2022,"Achrei Mot","Haftara","I Samuel 20:18-42 | Shabbat Machar Chodesh",25',
+    '30-Apr-2022,"Achrei Mot","Haftara for Ashkenazim","I Samuel 20:18-42 | Shabbat Machar Chodesh",25',
+    '30-Apr-2022,"Achrei Mot","Haftara for Sephardim","Ezekiel 22:1-16",16',
     '', ''];
   t.deepEqual(lines, expected);
 });
@@ -69,7 +70,7 @@ test('writeTriennialEvent-parsha-alt-haftara', (t) => {
     '19-Nov-2016,"Vayera",6,"Genesis 18:27-18:30",4',
     '19-Nov-2016,"Vayera",7,"Genesis 18:31-18:33",3',
     '19-Nov-2016,"Vayera","maf","Genesis 18:31-18:33",3',
-    '19-Nov-2016,"Vayera","Haftara","II Kings 4:1-37",37',
+    '19-Nov-2016,"Vayera","Haftara for Ashkenazim","II Kings 4:1-37",37',
     '19-Nov-2016,"Vayera","Haftara for Sephardim","II Kings 4:1-23",23',
     '19-Nov-2016,"Vayera","Alternate Haftara","II Kings 4:8-17",10',
     '', ''];

@@ -32,8 +32,7 @@ test('writeTriennialEvent-parsha', (t) => {
     '30-Apr-2022,"Achrei Mot",6,"Leviticus 18:22-18:25",4',
     '30-Apr-2022,"Achrei Mot",7,"Leviticus 18:26-18:30",5',
     '30-Apr-2022,"Achrei Mot","maf","Leviticus 18:26-18:30",5',
-    '30-Apr-2022,"Achrei Mot","Haftara for Ashkenazim","I Samuel 20:18-42 | Shabbat Machar Chodesh",25',
-    '30-Apr-2022,"Achrei Mot","Haftara for Sephardim","Ezekiel 22:1-16",16',
+    '30-Apr-2022,"Achrei Mot","Haftara","I Samuel 20:18-42 | Shabbat Machar Chodesh",25',
     '', ''];
   t.deepEqual(lines, expected);
 });

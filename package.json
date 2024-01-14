@@ -30,8 +30,8 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-triennial#readme",
   "dependencies": {
-    "@hebcal/core": "^5.0.9",
-    "@hebcal/leyning": "^8.1.4"
+    "@hebcal/core": "^5.1.0",
+    "@hebcal/leyning": "^8.1.5"
   },
   "typings": "types.d.ts",
   "files": [

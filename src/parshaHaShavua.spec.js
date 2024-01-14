@@ -1,5 +1,5 @@
 import test from 'ava';
-import {HebrewCalendar, HDate, months, flags} from '@hebcal/core';
+import {HebrewCalendar, HDate, months, flags, ParshaEvent} from '@hebcal/core';
 import {getTriennialForParshaHaShavua} from './parshaHaShavua.js';
 import {formatAliyahWithBook} from '@hebcal/leyning';
 
@@ -248,4 +248,13 @@ test('triennial-haft', (t) => {
   t.is(ev3.getDesc(), 'Parashat Devarim');
   const r3 = getTriennialForParshaHaShavua(ev3);
   t.is(r3.haftara, undefined);
+});
+
+test('no-triennial-haft-on-special', (t) => {
+  const hd = new HDate(29, 'Tishrei', 5784);
+  const ev = new ParshaEvent(hd, ['Bereshit'], false);
+  const reading = getTriennialForParshaHaShavua(ev, false);
+  t.is(reading.haft, undefined);
+  t.is(reading.haftara, undefined);
+  t.is(reading.haftaraNumV, undefined);
 });

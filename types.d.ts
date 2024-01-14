@@ -23,6 +23,12 @@ declare module '@hebcal/triennial' {
         date2?: Date;
         /** true if we read the entire parsha */
         fullParsha?: boolean;
+        /** Triennial Haftarah object */
+        haft?: Aliyah | Aliyah[];
+        /** Triennial Haftarah string, such as `Isaiah 42:5 – 43:11` */
+        haftara?: string;
+        /** Number of verses in the Haftarah */
+        haftaraNumV?: number;
     };
 
     /**

@@ -43,7 +43,9 @@ export function getTriennialForParshaHaShavua(ev, il = false) {
   }
   reading.yearNum = yearNum;
   reading.aliyot = aliyotMap;
-  const triHaft = getTriennialHaftara(parsha, yearNum);
-  Object.assign(reading, triHaft);
+  if (!special.haft) {
+    const triHaft = getTriennialHaftara(parsha, yearNum);
+    Object.assign(reading, triHaft);
+  }
   return reading;
 }

@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/triennial",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "Javascript Triennial Torah Readings",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",

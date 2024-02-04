@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/triennial",
-  "version": "5.0.4",
+  "version": "5.0.5",
   "description": "Javascript Triennial Torah Readings",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -15,7 +15,7 @@
     "build:json2js": "for f in src/*.json; do echo 'export default' > $f.js && cat $f >> $f.js; done",
     "build": "npm run build:json2js && npm run build:rollup",
     "prepublish": "npm run build",
-    "readme": "npx jsdoc2md dist/index.js",
+    "readme": "cp dist/index.mjs tmp.js && npx -p jsdoc-to-markdown jsdoc2md tmp.js && rm -f tmp.js",
     "pretest": "npm run build",
     "test": "ava"
   },
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-triennial#readme",
   "dependencies": {
-    "@hebcal/core": "^5.1.0",
+    "@hebcal/core": "^5.2.1",
     "@hebcal/leyning": "^8.1.5"
   },
   "typings": "types.d.ts",
@@ -47,11 +47,11 @@
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
-    "ava": "^6.0.1",
+    "ava": "^6.1.1",
     "eslint": "^8.56.0",
     "eslint-config-google": "^0.14.0",
     "jsdoc": "^4.0.2",
-    "jsdoc-to-markdown": "^8.0.0",
-    "rollup": "^4.9.5"
+    "jsdoc-to-markdown": "^8.0.1",
+    "rollup": "^4.9.6"
   }
 }

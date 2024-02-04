@@ -505,21 +505,6 @@
   }}},
 "Yitro":{
   "book":2,
-  "descr":"full parashah with Ten Commandments every year",
-  "fullParsha":true,
-  "variations":{
-  "Y.1":{
-   "1":["18:1","18:12"],
-   "2":["18:13","18:23"],
-   "3":["18:24","18:27"],
-   "4":["19:1","19:6"],
-   "5":["19:7","19:19"],
-   "6":["19:20","20:14"],
-   "7":["20:15","20:23"],
-   "M":["20:19","20:23"]},
-  "Y.2":"Y.1",
-  "Y.3":"Y.1"},
-  "alt":{
   "descr":"triennial divisions with Ten Commandments in years two and three",
   "variations":{
   "Y.1":{
@@ -541,7 +526,7 @@
    "7":["20:19","20:23"],
    "M":["20:21","20:23"]},
   "Y.3":"Y.2"
-  }}},
+  }},
 "Mishpatim":{
   "book":2,
   "years":{

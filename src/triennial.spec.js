@@ -168,3 +168,33 @@ test('Chukat-Balak 5783', (t) => {
   };
   t.deepEqual(reading.aliyot, expected);
 });
+
+test('Yitro', (t) => {
+  const tri = new Triennial(5783);
+  const reading1 = tri.getReading('Yitro', 0);
+  const reading2 = tri.getReading('Yitro', 1);
+  const reading3 = tri.getReading('Yitro', 2);
+  const expected1 = {
+    '1': {k: 'Exodus', b: '18:1', e: '18:4', v: 4},
+    '2': {k: 'Exodus', b: '18:5', e: '18:8', v: 4},
+    '3': {k: 'Exodus', b: '18:9', e: '18:12', v: 4},
+    '4': {k: 'Exodus', b: '18:13', e: '18:16', v: 4},
+    '5': {k: 'Exodus', b: '18:17', e: '18:19', v: 3},
+    '6': {k: 'Exodus', b: '18:20', e: '18:23', v: 4},
+    '7': {k: 'Exodus', b: '18:24', e: '18:27', v: 4},
+    'M': {k: 'Exodus', b: '18:24', e: '18:27', v: 4},
+  };
+  const expected23 = {
+    '1': {k: 'Exodus', b: '19:1', e: '19:6', v: 6},
+    '2': {k: 'Exodus', b: '19:7', e: '19:9', v: 3},
+    '3': {k: 'Exodus', b: '19:10', e: '19:13', v: 4},
+    '4': {k: 'Exodus', b: '19:14', e: '19:19', v: 6},
+    '5': {k: 'Exodus', b: '19:20', e: '20:14', v: 20},
+    '6': {k: 'Exodus', b: '20:15', e: '20:18', v: 4},
+    '7': {k: 'Exodus', b: '20:19', e: '20:23', v: 5},
+    'M': {k: 'Exodus', b: '20:21', e: '20:23', v: 3},
+  };
+  t.deepEqual(reading1.aliyot, expected1);
+  t.deepEqual(reading2.aliyot, expected23);
+  t.deepEqual(reading3.aliyot, expected23);
+});

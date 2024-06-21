@@ -86,7 +86,8 @@ export class Triennial {
    */
   getReading(parsha, yearNum) {
     // don't use clone() here because we want to preserve HDate objects
-    const reading = Object.assign({}, this.readings.get(parsha)[yearNum]);
+    const reading0 = this.readings.get(parsha)[yearNum];
+    const reading = {...reading0};
     if (reading.aliyot) {
       Object.values(reading.aliyot).map((aliyah) => calculateNumVerses(aliyah));
     }
@@ -233,6 +234,7 @@ export class Triennial {
       readings.get(name)[yr] = {
         aliyot,
         date: new HDate(this.firstSaturday + (i * 7)),
+        variation,
       };
     }
     // create links for doubled
@@ -242,26 +244,33 @@ export class Triennial {
       const p1 = parshiot[id];
       const p2 = parshiot[id + 1];
       if (combined) {
-        readings.get(p1)[yr] = readings.get(p2)[yr] = {readTogether: h, date: combined.date};
+        readings.get(p1)[yr] = readings.get(p2)[yr] = {
+          readTogether: h,
+          date: combined.date,
+          variation: combined.variation,
+        };
       } else {
+        const r1 = readings.get(p1)[yr];
         readings.get(h)[yr] = {
           readSeparately: true,
-          date1: readings.get(p1)[yr].date,
+          date1: r1.date,
           date2: readings.get(p2)[yr].date,
+          variation: r1.variation,
         };
       }
     }
     const vezotAliyot = triennialAliyot.get(VEZOT_HABERAKHAH).get('Y.1');
     readings.get(VEZOT_HABERAKHAH)[yr] = {
-      aliyot: vezotAliyot,
+      aliyot: clone(vezotAliyot),
       date: new HDate(23, months.TISHREI, this.startYear + yr),
+      variation: 'Y.1',
     };
   }
 
   /**
    * Walks triennialConfig and builds lookup table for triennial aliyot
    * @private
-   * @return {Object}
+   * @return {Map}
    */
   static getTriennialAliyot() {
     const triennialAliyot = new Map();
@@ -288,7 +297,7 @@ export class Triennial {
    * @param {string} parsha
    * @param {string} book
    * @param {Object} triennial
-   * @return {Object}
+   * @return {Map<string,Object>}
    */
   static resolveSameAs(parsha, book, triennial) {
     const variations = triennial.years || triennial.variations;

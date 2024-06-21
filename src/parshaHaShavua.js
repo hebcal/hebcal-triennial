@@ -10,7 +10,7 @@ import {getTriennial} from './triennial.js';
  * @return {TriennialAliyot} a map of aliyot 1-7 plus "M"
  */
 export function getTriennialForParshaHaShavua(ev, il = false) {
-  if (!ev instanceof Event) {
+  if (!(ev instanceof Event)) {
     throw new TypeError(`Bad event argument: ${ev}`);
   } else if (ev.getFlags() != flags.PARSHA_HASHAVUA) {
     throw new TypeError(`Event must be parsha hashavua: ${ev.getDesc()}`);

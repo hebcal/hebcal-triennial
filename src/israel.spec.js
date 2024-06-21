@@ -52,6 +52,7 @@ test('Matot-Masei STS', (t) => {
       'M': {k: 'Numbers', b: '33:47', e: '33:49', v: 3},
     },
     date: new HDate(735797), // day: 2, month: 5, year: 5775
+    variation: 'Y.2',
   };
   t.deepEqual(r2, expected);
 
@@ -107,8 +108,11 @@ test('Behar-Bechukotai SST', (t) => {
   const r2 = tri.getReading('Behar-Bechukotai', 1);
   const r3 = tri.getReading('Behar-Bechukotai', 2);
   t.is(r1.readSeparately, true);
+  t.is(r1.variation, 'IL2.1');
   t.is(r2.readSeparately, true);
+  t.is(r2.variation, 'IL2.2');
   t.is(r3.readSeparately, undefined);
+  t.is(r3.variation, 'Y.3');
 });
 
 test('Behar-Bechukotai TSS', (t) => {
@@ -117,8 +121,11 @@ test('Behar-Bechukotai TSS', (t) => {
   const r2 = tri.getReading('Behar-Bechukotai', 1);
   const r3 = tri.getReading('Behar-Bechukotai', 2);
   t.is(r1.readSeparately, undefined);
+  t.is(r1.variation, 'Y.1');
   t.is(r2.readSeparately, true);
+  t.is(r2.variation, 'IL3.2');
   t.is(r3.readSeparately, true);
+  t.is(r3.variation, 'IL3.3');
 
   t.is('Leviticus 25:1-38', makeSummaryFromParts(makeLeyningParts(r1.aliyot)));
 

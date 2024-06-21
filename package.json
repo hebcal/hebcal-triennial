@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/triennial",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "Javascript Triennial Torah Readings",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/hebcal/hebcal-triennial#readme",
   "dependencies": {
-    "@hebcal/core": "^5.4.4",
+    "@hebcal/core": "^5.4.5",
     "@hebcal/leyning": "^8.1.9"
   },
   "typings": "types.d.ts",
@@ -43,7 +43,7 @@
     "triennial-csv": "bin/triennial-csv"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-commonjs": "^26.0.1",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",

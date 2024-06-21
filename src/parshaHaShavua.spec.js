@@ -195,7 +195,7 @@ test('emor-5746', (t) => {
     ],
     haftara: 'Nachum 1:1-7, 2:1-3, 2:2b-3a',
     haftaraNumV: 12,
-
+    variation: 'Y.3',
   };
   t.deepEqual(reading, expected);
 });

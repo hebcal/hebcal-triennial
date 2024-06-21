@@ -17,6 +17,7 @@ test('triennial', (t) => {
         'M': {k: 'Exodus', b: '37:10', e: '37:16', v: 7},
       },
       date: new HDate(736413),
+      variation: 'Y.1',
     },
     {
       aliyot: {
@@ -30,11 +31,13 @@ test('triennial', (t) => {
         'M': {k: 'Exodus', b: '39:19', e: '39:21', v: 3},
       },
       date: new HDate(736763),
+      variation: 'Y.2',
     },
     {
       readSeparately: true,
       date1: new HDate(737120),
       date2: new HDate(737127),
+      variation: 'A.3',
     },
   ];
   for (let i = 0; i < 3; i++) {
@@ -63,6 +66,7 @@ test('Vayakhel-Pekudei', (t) => {
     readSeparately: true,
     date1: new HDate(756846),
     date2: new HDate(756853),
+    variation: 'G.3',
   };
   t.deepEqual(separate, expectedSeparate);
   const reading = tri.getReading('Vayakhel', 2);
@@ -78,6 +82,7 @@ test('Vayakhel-Pekudei', (t) => {
       'M': {k: 'Exodus', b: '38:18', e: '38:20', v: 3},
     },
     date: new HDate(756846),
+    variation: 'G.3',
   };
   t.deepEqual(reading, expected);
 });
@@ -87,10 +92,12 @@ test('readTogether', (t) => {
   t.deepEqual(tri.getReading('Tazria', 0), {
     readTogether: 'Tazria-Metzora',
     date: new HDate(737540),
+    variation: 'Y.1',
   });
   t.deepEqual(tri.getReading('Tazria', 1), {
     readTogether: 'Tazria-Metzora',
     date: new HDate(737897),
+    variation: 'Y.2',
   });
 });
 
@@ -100,6 +107,7 @@ test('readSeparately', (t) => {
     readSeparately: true,
     date1: new HDate(738247),
     date2: new HDate(738254),
+    variation: 'A.3',
   });
 });
 
@@ -118,6 +126,7 @@ test('Vezot Haberakhah', (t) => {
     },
     date: new HDate(23, 7, 5780),
     fullParsha: true,
+    variation: 'Y.1',
   };
   t.deepEqual(reading, expected);
 });
@@ -168,6 +177,17 @@ test('Chukat-Balak 5783', (t) => {
   };
   t.deepEqual(reading.aliyot, expected);
 });
+
+test('Chukat 5784', (t) => {
+  const tri = new Triennial(5784);
+  const r1 = tri.getReading('Chukat', 0);
+  const r2 = tri.getReading('Chukat', 1);
+  const r3 = tri.getReading('Chukat', 2);
+  t.is(r1.variation, 'Y.1');
+  t.is(r2.variation, 'C.2');
+  t.is(r3.variation, 'C.3');
+});
+
 
 test('Yitro', (t) => {
   const tri = new Triennial(5783);

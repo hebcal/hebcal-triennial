@@ -14,7 +14,7 @@ export function getTriennialForParshaHaShavua(
   if (!(ev instanceof Event)) {
     throw new TypeError(`Bad event argument: ${ev}`);
   } else if (ev.getFlags() !== flags.PARSHA_HASHAVUA) {
-    throw new TypeError(`Event must be parsha hashavua: ${ev.getDesc()}`);
+    throw new TypeError(`Bad event argument: ${ev.getDesc()}`);
   }
   const hd = ev.getDate();
   const hyear0 = hd.getFullYear();

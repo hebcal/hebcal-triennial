@@ -227,3 +227,20 @@ test('Yitro', () => {
   expect(reading2.aliyot).toEqual(expected23);
   expect(reading3.aliyot).toEqual(expected23);
 });
+
+test('getReading-throws', () => {
+  const tri = new Triennial(5780);
+  expect(() => {
+    tri.getReading('Noach', 3);
+  }).toThrow('invalid year number: 3');
+
+  expect(() => {
+    tri.getReading('Bogus', 1);
+  }).toThrow('invalid parsha: Bogus');
+});
+
+test('getYearNumber-throws', () => {
+  expect(() => {
+    Triennial.getYearNumber(1234);
+  }).toThrow('Invalid Triennial year 1234');
+});

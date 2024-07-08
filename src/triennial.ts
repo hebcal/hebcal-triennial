@@ -136,8 +136,15 @@ export class Triennial {
    * @returns result, including a map of aliyot 1-7 plus "M"
    */
   getReading(parsha: string, yearNum: number): TriennialAliyot {
+    if (yearNum < 0 || yearNum > 2) {
+      throw new RangeError(`invalid year number: ${yearNum}`);
+    }
+    const years = this.readings.get(parsha);
+    if (!years) {
+      throw new RangeError(`invalid parsha: ${parsha}`);
+    }
     // don't use clone() here because we want to preserve HDate objects
-    const reading0 = this.readings.get(parsha)![yearNum];
+    const reading0 = years[yearNum];
     const reading: TriennialAliyot = {...reading0};
     if (reading.aliyot) {
       Object.values(reading.aliyot).map((aliyah: Aliyah) =>

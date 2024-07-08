@@ -1,4 +1,4 @@
-import {HebrewCalendar, HDate, months, flags, ParshaEvent} from '@hebcal/core';
+import {HebrewCalendar, HDate, months, flags, ParshaEvent, Event} from '@hebcal/core';
 import {getTriennialForParshaHaShavua} from '../src/parshaHaShavua';
 import {formatAliyahWithBook} from '@hebcal/leyning';
 
@@ -256,4 +256,12 @@ test('no-triennial-haft-on-special', () => {
   expect(reading.haft).not.toBeDefined();
   expect(reading.haftara).not.toBeDefined();
   expect(reading.haftaraNumV).not.toBeDefined();
+});
+
+test('getTriennialForParshaHaShavua-throws', () => {
+  const hd = new HDate(29, 'Tishrei', 5784);
+  const ev = new Event(hd, 'Bogus', flags.DAF_YOMI);
+  expect(() => {
+    getTriennialForParshaHaShavua(ev, false);
+  }).toThrow('Bad event argument: Bogus');
 });

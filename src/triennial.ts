@@ -1,4 +1,4 @@
-import { HDate, HebrewCalendar, months, parshiot } from '@hebcal/core';
+import {HDate, HebrewCalendar, months, parshiot} from '@hebcal/core';
 import {
   Aliyah,
   AliyotMap,
@@ -110,7 +110,7 @@ export class Triennial {
       throw new RangeError(`Invalid Triennial year ${hebrewYear}`);
     }
     if (!triennialAliyot) {
-      triennialAliyot = Triennial.getTriennialAliyot();
+      triennialAliyot = makeTriennialAliyot();
     }
 
     this.startYear = Triennial.getCycleStartYear(hebrewYear);
@@ -177,9 +177,8 @@ export class Triennial {
   /**
    * First, determine if a doubled parsha is read [T]ogether or [S]eparately
    * in each of the 3 years. Yields a pattern like 'SSS', 'STS', 'TTT', 'TTS'.
-   * @private
    */
-  getThreeYearPattern(id: number): string {
+  private getThreeYearPattern(id: number): string {
     let pattern = '';
     for (let yr = 0; yr <= 2; yr++) {
       let found = this.sedraArray.indexOf(-1 * id, this.bereshit[yr]);
@@ -192,10 +191,7 @@ export class Triennial {
     return pattern;
   }
 
-  /**
-   * @private
-   */
-  calcVariationOptions(): Map<string, string> {
+  private calcVariationOptions(): Map<string, string> {
     const map = new Map<string, string>();
     for (const id of doubled) {
       const pattern = this.getThreeYearPattern(id);
@@ -231,9 +227,8 @@ export class Triennial {
 
   /**
    * Builds a lookup table readings["Bereshit"][0], readings["Matot-Masei"][2]
-   * @private
    */
-  cycleReadings(): Map<string, TriennialAliyot[]> {
+  private cycleReadings(): Map<string, TriennialAliyot[]> {
     const readings = new Map<string, TriennialAliyot[]>();
     for (const parsha of parshiot) {
       readings.set(parsha, Array(3));
@@ -249,10 +244,10 @@ export class Triennial {
     return readings;
   }
 
-  /**
-   * @private
-   */
-  cycleReadingsForYear(readings: Map<string, TriennialAliyot[]>, yr: number) {
+  private cycleReadingsForYear(
+    readings: Map<string, TriennialAliyot[]>,
+    yr: number
+  ) {
     if (!triennialAliyot) {
       throw new Error();
     }
@@ -319,70 +314,66 @@ export class Triennial {
       variation: 'Y.1',
     };
   }
+}
 
-  /**
-   * Walks triennialConfig and builds lookup table for triennial aliyot
-   * @private
-   */
-  static getTriennialAliyot(): Map<string, Map<string, AliyotMap>> {
-    const triennialAliyot = new Map<string, Map<string, AliyotMap>>();
-    // build a lookup table so we don't have to follow num/variation/sameas
-    for (const [parsha, value] of Object.entries(triennialConfig)) {
-      if (typeof value !== 'object' || typeof value.book !== 'number') {
-        throw new Error(`misconfiguration: ${parsha}`);
-      }
-      const book = BOOK[value.book];
-      triennialAliyot.set(parsha, Triennial.resolveSameAs(parsha, book, value));
-    }
-    return triennialAliyot;
+/**
+ * Transforms input JSON with sameAs shortcuts like "D.2":"A.3" to
+ * actual aliyot objects for a given variation/year
+ * @private
+ */
+function resolveSameAs(
+  parsha: string,
+  book: string,
+  triennial: JsonParsha
+): Map<string, AliyotMap> {
+  const variations: JsonVariationMap | JsonAliyotMap | undefined =
+    triennial.years || triennial.variations;
+  if (typeof variations === 'undefined') {
+    throw new Error(`Parashat ${parsha} has no years or variations`);
   }
+  // first pass, copy only alyiot definitions from triennialConfig into lookup table
+  const lookup = new Map<string, AliyotMap>();
+  for (const [variation, aliyot] of Object.entries(variations)) {
+    if (typeof aliyot === 'object') {
+      const dest: AliyotMap = {};
+      for (const [num, src] of Object.entries(aliyot)) {
+        const reading: Aliyah = {k: book, b: src[0], e: src[1]};
+        dest[num] = reading;
+      }
+      lookup.set(variation, dest);
+    }
+  }
+  // second pass to resolve sameas strings (to simplify later lookups)
+  for (const [variation, aliyot] of Object.entries(variations)) {
+    if (typeof aliyot === 'string') {
+      const dest = lookup.get(aliyot);
+      if (typeof dest === 'undefined') {
+        throw new Error(
+          `Can't find source for ${parsha} ${variation} sameas=${aliyot}`
+        );
+      }
+      lookup.set(variation, dest);
+    }
+  }
+  return lookup;
+}
 
-  /**
-   * Transforms input JSON with sameAs shortcuts like "D.2":"A.3" to
-   * actual aliyot objects for a given variation/year
-   * @private
-   */
-  static resolveSameAs(
-    parsha: string,
-    book: string,
-    triennial: JsonParsha
-  ): Map<string, AliyotMap> {
-    const variations: JsonVariationMap | JsonAliyotMap | undefined =
-      triennial.years || triennial.variations;
-    if (typeof variations === 'undefined') {
-      throw new Error(`Parashat ${parsha} has no years or variations`);
+/**
+ * Walks triennialConfig and builds lookup table for triennial aliyot
+ * @private
+ */
+function makeTriennialAliyot(): Map<string, Map<string, AliyotMap>> {
+  const triennialAliyot = new Map<string, Map<string, AliyotMap>>();
+  // build a lookup table so we don't have to follow num/variation/sameas
+  for (const [parsha, value] of Object.entries(triennialConfig)) {
+    if (typeof value !== 'object' || typeof value.book !== 'number') {
+      throw new Error(`misconfiguration: ${parsha}`);
     }
-    // first pass, copy only alyiot definitions from triennialConfig into lookup table
-    const lookup = new Map<string, AliyotMap>();
-    for (const [variation, aliyot] of Object.entries(variations)) {
-      if (typeof aliyot === 'object') {
-        const dest: AliyotMap = {};
-        for (const [num, src] of Object.entries(aliyot)) {
-          const reading: Aliyah = {k: book, b: src[0], e: src[1]};
-          /*
-          if (src.v) {
-            reading.v = src.v;
-          }
-          */
-          dest[num] = reading;
-        }
-        lookup.set(variation, dest);
-      }
-    }
-    // second pass to resolve sameas strings (to simplify later lookups)
-    for (const [variation, aliyot] of Object.entries(variations)) {
-      if (typeof aliyot === 'string') {
-        const dest = lookup.get(aliyot);
-        if (typeof dest === 'undefined') {
-          throw new Error(
-            `Can't find source for ${parsha} ${variation} sameas=${aliyot}`
-          );
-        }
-        lookup.set(variation, dest);
-      }
-    }
-    return lookup;
+    const book = BOOK[value.book];
+    const lookup = resolveSameAs(parsha, book, value);
+    triennialAliyot.set(parsha, lookup);
   }
+  return triennialAliyot;
 }
 
 const __cache = new Map<string, Triennial>();

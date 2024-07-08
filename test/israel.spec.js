@@ -1,10 +1,9 @@
-import test from 'ava';
 import {HDate, ParshaEvent} from '@hebcal/core';
 import {makeLeyningParts, makeSummaryFromParts} from '@hebcal/leyning';
-import {Triennial} from './triennial.js';
-import {getTriennialForParshaHaShavua} from './parshaHaShavua.js';
+import {Triennial} from '../src/triennial';
+import {getTriennialForParshaHaShavua} from '../src/parshaHaShavua';
 
-test('debug', (t) => {
+test('debug', () => {
   const tri5774 = new Triennial(5774, true);
   const actual5774 = tri5774.debug();
   const expected5774 = `Triennial cycle started year 5774
@@ -16,7 +15,7 @@ test('debug', (t) => {
   Matot-Masei STS (IL)
   Nitzavim-Vayeilech TSS (Y)
 `;
-  t.is(actual5774, expected5774);
+  expect(actual5774).toBe(expected5774);
 
   const tri5789 = new Triennial(5789, true);
   const actual5789 = tri5789.debug();
@@ -29,17 +28,17 @@ test('debug', (t) => {
   Matot-Masei TTT (Y)
   Nitzavim-Vayeilech STT (Y)
 `;
-  t.is(actual5789, expected5789);
+  expect(actual5789).toBe(expected5789);
 });
 
-test('Matot-Masei STS', (t) => {
+test('Matot-Masei STS', () => {
   const tri = new Triennial(5774, true);
   const r1 = tri.getReading('Matot-Masei', 0);
   const r2 = tri.getReading('Matot-Masei', 1);
   const r3 = tri.getReading('Matot-Masei', 2);
-  t.is(r1.readSeparately, true);
-  t.is(r2.readSeparately, undefined);
-  t.is(r3.readSeparately, true);
+  expect(r1.readSeparately).toBe(true);
+  expect(r2.readSeparately).toBeUndefined();
+  expect(r3.readSeparately).toBe(true);
   const expected = {
     aliyot: {
       '1': {k: 'Numbers', b: '32:1', e: '32:4', v: 4},
@@ -53,8 +52,9 @@ test('Matot-Masei STS', (t) => {
     },
     date: new HDate(735797), // day: 2, month: 5, year: 5775
     variation: 'Y.2',
+    yearNum: 1,
   };
-  t.deepEqual(r2, expected);
+  expect(r2).toEqual(expected);
 
   const matot1 = tri.getReading('Matot', 0);
   const masei1 = tri.getReading('Masei', 0);
@@ -67,7 +67,7 @@ test('Matot-Masei STS', (t) => {
     makeSummaryFromParts(makeLeyningParts(matot3.aliyot)),
     makeSummaryFromParts(makeLeyningParts(masei3.aliyot)),
   ];
-  t.deepEqual(summary, [
+  expect(summary).toEqual([
     'Numbers 30:2-31:54',
     'Numbers 33:1-49',
     'Numbers 32:1-33:49',
@@ -76,14 +76,14 @@ test('Matot-Masei STS', (t) => {
   ]);
 });
 
-test('Behar-Bechukotai SSS', (t) => {
+test('Behar-Bechukotai SSS', () => {
   const tri = new Triennial(5774, true);
   const r1 = tri.getReading('Behar-Bechukotai', 0);
   const r2 = tri.getReading('Behar-Bechukotai', 1);
   const r3 = tri.getReading('Behar-Bechukotai', 2);
-  t.is(r1.readSeparately, true);
-  t.is(r2.readSeparately, true);
-  t.is(r3.readSeparately, true);
+  expect(r1.readSeparately).toBe(true);
+  expect(r2.readSeparately).toBe(true);
+  expect(r3.readSeparately).toBe(true);
 
   const actualP1 = [];
   for (let i = 0; i < 3; i++) {
@@ -91,7 +91,7 @@ test('Behar-Bechukotai SSS', (t) => {
     actualP1.push(makeSummaryFromParts(makeLeyningParts(reading.aliyot)));
   }
   const expectedP1 = ['Leviticus 25:1-28', 'Leviticus 25:1-28', 'Leviticus 25:29-26:2'];
-  t.deepEqual(actualP1, expectedP1);
+  expect(actualP1).toEqual(expectedP1);
 
   const actualP2 = [];
   for (let i = 0; i < 3; i++) {
@@ -99,35 +99,36 @@ test('Behar-Bechukotai SSS', (t) => {
     actualP2.push(makeSummaryFromParts(makeLeyningParts(reading.aliyot)));
   }
   const expectedP2 = ['Leviticus 26:3-27:15', 'Leviticus 27:1-34', 'Leviticus 27:1-34'];
-  t.deepEqual(actualP2, expectedP2);
+  expect(actualP2).toEqual(expectedP2);
 });
 
-test('Behar-Bechukotai SST', (t) => {
+test('Behar-Bechukotai SST', () => {
   const tri = new Triennial(5789, true);
   const r1 = tri.getReading('Behar-Bechukotai', 0);
   const r2 = tri.getReading('Behar-Bechukotai', 1);
   const r3 = tri.getReading('Behar-Bechukotai', 2);
-  t.is(r1.readSeparately, true);
-  t.is(r1.variation, 'IL2.1');
-  t.is(r2.readSeparately, true);
-  t.is(r2.variation, 'IL2.2');
-  t.is(r3.readSeparately, undefined);
-  t.is(r3.variation, 'Y.3');
+  expect(r1.readSeparately).toBe(true);
+  expect(r1.variation).toBe('IL2.1');
+  expect(r2.readSeparately).toBe(true);
+  expect(r2.variation).toBe('IL2.2');
+  expect(r3.readSeparately).toBeUndefined();
+  expect(r3.variation).toBe('Y.3');
 });
 
-test('Behar-Bechukotai TSS', (t) => {
+test('Behar-Bechukotai TSS', () => {
   const tri = new Triennial(5777, true);
   const r1 = tri.getReading('Behar-Bechukotai', 0);
   const r2 = tri.getReading('Behar-Bechukotai', 1);
   const r3 = tri.getReading('Behar-Bechukotai', 2);
-  t.is(r1.readSeparately, undefined);
-  t.is(r1.variation, 'Y.1');
-  t.is(r2.readSeparately, true);
-  t.is(r2.variation, 'IL3.2');
-  t.is(r3.readSeparately, true);
-  t.is(r3.variation, 'IL3.3');
+  expect(r1.readSeparately).toBeUndefined();
+  expect(r1.variation).toBe('Y.1');
+  expect(r2.readSeparately).toBe(true);
+  expect(r2.variation).toBe('IL3.2');
+  expect(r3.readSeparately).toBe(true);
+  expect(r3.variation).toBe('IL3.3');
 
-  t.is('Leviticus 25:1-38', makeSummaryFromParts(makeLeyningParts(r1.aliyot)));
+  expect(makeSummaryFromParts(makeLeyningParts(r1.aliyot)))
+      .toBe('Leviticus 25:1-38');
 
   const actualP1 = [];
   for (let i = 1; i < 3; i++) {
@@ -135,7 +136,7 @@ test('Behar-Bechukotai TSS', (t) => {
     actualP1.push(makeSummaryFromParts(makeLeyningParts(reading.aliyot)));
   }
   const expectedP1 = ['Leviticus 25:39-26:46', 'Leviticus 25:29-26:2'];
-  t.deepEqual(actualP1, expectedP1);
+  expect(actualP1).toEqual(expectedP1);
 
   const actualP2 = [];
   for (let i = 1; i < 3; i++) {
@@ -143,19 +144,18 @@ test('Behar-Bechukotai TSS', (t) => {
     actualP2.push(makeSummaryFromParts(makeLeyningParts(reading.aliyot)));
   }
   const expectedP2 = ['Leviticus 26:3-27:15', 'Leviticus 27:1-34'];
-  t.deepEqual(actualP2, expectedP2);
+  expect(actualP2).toEqual(expectedP2);
 });
 
-test('multi', (t) => {
+test('multi', () => {
   for (let hyear = 5774; hyear <= 6600; hyear += 3) {
     const tri = new Triennial(hyear, true);
     const str = tri.debug();
-    t.is(typeof str, 'string');
+    expect(typeof str).toBe('string');
   }
-  t.pass();
 });
 
-test('getTriennialForParshaHaShavua', (t) => {
+test('getTriennialForParshaHaShavua', () => {
   const hd = new HDate(7, 'Sivan', 5783);
   const pe = new ParshaEvent(hd, ['Nasso'], true);
   const reading = getTriennialForParshaHaShavua(pe, true);
@@ -169,5 +169,5 @@ test('getTriennialForParshaHaShavua', (t) => {
     '7': {k: 'Numbers', b: '5:5', e: '5:10', v: 6},
     'M': {k: 'Numbers', b: '5:8', e: '5:10', v: 3},
   };
-  t.deepEqual(reading.aliyot, expected);
+  expect(reading.aliyot).toEqual(expected);
 });

@@ -1,21 +1,45 @@
-import {HDate, HebrewCalendar, parshiot, months} from '@hebcal/core';
-import triennialConfig from './triennial.json.js';
-import {BOOK, calculateNumVerses, clone} from '@hebcal/leyning';
+import { HDate, HebrewCalendar, months, parshiot } from '@hebcal/core';
+import {
+  Aliyah,
+  AliyotMap,
+  BOOK,
+  calculateNumVerses,
+  clone,
+  StringMap,
+} from '@hebcal/leyning';
+import triennialConfig0 from './triennial.json';
 
 /**
  * Represents triennial aliyot for a given date
- * @typedef {Object} TriennialAliyot
- * @property {Object<string,Aliyah>} aliyot - a map of aliyot 1-7 plus "M"
- * @property {number} yearNum - year number, 0-2
- * @property {Date} date - Shabbat date for when this parsha is read in this 3-year cycle
- * @property {boolean} [readSeparately] - true if a double parsha is read separately in year `yearNum`
- * @property {Date} [date1] - Shabbat date of the first part of a read-separately aliyah pair
- * @property {Date} [date2] - Shabbat date of the second part of a read-separately aliyah pair
- * @property {boolean} [fullParsha] - true if we read the entire parsha
  */
+export type TriennialAliyot = {
+  /** Map of aliyot `1` through `7` plus `M` for maftir */
+  aliyot?: AliyotMap;
+  /** year number, 0-2 */
+  yearNum?: number;
+  /** Shabbat date for when this parsha is read in this 3-year cycle */
+  date?: HDate;
+  /** true if a double parsha is read separately in year `yearNum` */
+  readSeparately?: boolean;
+  /** if read together, the name of the combined parsha */
+  readTogether?: string;
+  /** Shabbat date of the first part of a read-separately aliyah pair */
+  date1?: HDate;
+  /** Shabbat date of the second part of a read-separately aliyah pair */
+  date2?: HDate;
+  /** true if we read the entire parsha */
+  fullParsha?: boolean;
+  /** Triennial Haftarah object */
+  haft?: Aliyah | Aliyah[];
+  /** Triennial Haftarah string, such as `Isaiah 42:5 – 43:11` */
+  haftara?: string;
+  /** Number of verses in the Haftarah */
+  haftaraNumV?: number;
+  variation?: string;
+};
 
 const VEZOT_HABERAKHAH = 'Vezot Haberakhah';
-const isSometimesDoubled = new Set();
+const isSometimesDoubled = new Set<number>();
 // N.B. these are 0-based indices
 const doubled = [
   21, // Vayakhel-Pekudei
@@ -34,26 +58,53 @@ for (const id of doubled) {
 /**
  * takes a 0-based (Bereshit=0) parsha ID
  * @private
- * @param {number} id
- * @return {string}
  */
-function getDoubledName(id) {
+function getDoubledName(id: number): string {
   const p1 = parshiot[id];
   const p2 = parshiot[id + 1];
   const name = p1 + '-' + p2;
   return name;
 }
 
-let triennialAliyot;
+let triennialAliyot: Map<string, Map<string, AliyotMap>>;
+
+type JsonAliyah = string[];
+
+type JsonAliyot = {[key: string]: JsonAliyah};
+
+type JsonAliyotMap = {[key: string]: JsonAliyot};
+
+type JsonVariationMap = {[key: string]: JsonAliyot | string};
+
+type JsonParsha = {
+  book: number;
+  descr?: string;
+  fullParsha?: boolean;
+  years?: JsonAliyotMap;
+  variations?: JsonVariationMap;
+  patterns?: StringMap;
+};
+
+type Parshiyot = {
+  [key: string]: JsonParsha;
+};
+
+const triennialConfig = triennialConfig0 as Parshiyot;
 
 /** Triennial Torah readings */
 export class Triennial {
+  startYear: number;
+  sedraArray: (number | string)[];
+  bereshit: number[];
+  firstSaturday: number;
+  variationOptions: Map<string, string>;
+  readings: Map<string, TriennialAliyot[]>;
   /**
    * Calculates Triennial schedule for entire Hebrew year
-   * @param {number} [hebrewYear] Hebrew Year (default current year)
-   * @param {boolean} [il] Israel (default false)
+   * @param [hebrewYear] Hebrew Year (default current year)
+   * @param [il] Israel (default false)
    */
-  constructor(hebrewYear, il=false) {
+  constructor(hebrewYear?: number, il = false) {
     hebrewYear = hebrewYear || new HDate().getFullYear();
     if (hebrewYear < 5744) {
       throw new RangeError(`Invalid Triennial year ${hebrewYear}`);
@@ -80,36 +131,35 @@ export class Triennial {
   }
 
   /**
-   * @param {string} parsha parsha name ("Bereshit" or "Achrei Mot-Kedoshim")
-   * @param {number} yearNum 0 through 2 for which year of Triennial cycle
-   * @return {TriennialAliyot} result, including a map of aliyot 1-7 plus "M"
+   * @param parsha parsha name ("Bereshit" or "Achrei Mot-Kedoshim")
+   * @param yearNum 0 through 2 for which year of Triennial cycle
+   * @returns result, including a map of aliyot 1-7 plus "M"
    */
-  getReading(parsha, yearNum) {
+  getReading(parsha: string, yearNum: number): TriennialAliyot {
     // don't use clone() here because we want to preserve HDate objects
-    const reading0 = this.readings.get(parsha)[yearNum];
-    const reading = {...reading0};
+    const reading0 = this.readings.get(parsha)![yearNum];
+    const reading: TriennialAliyot = {...reading0};
     if (reading.aliyot) {
-      Object.values(reading.aliyot).map((aliyah) => calculateNumVerses(aliyah));
+      Object.values(reading.aliyot).map((aliyah: Aliyah) =>
+        calculateNumVerses(aliyah)
+      );
     }
     if (triennialConfig[parsha].fullParsha) {
       reading.fullParsha = true;
     }
+    reading.yearNum = yearNum;
     return reading;
   }
 
-  /**
-   * @return {number}
-   */
-  getStartYear() {
+  getStartYear(): number {
     return this.startYear;
   }
 
   /**
    * Returns triennial year 1, 2 or 3 based on this Hebrew year
-   * @param {number} year Hebrew year
-   * @return {number}
+   * @param year Hebrew year
    */
-  static getYearNumber(year) {
+  static getYearNumber(year: number): number {
     if (year < 5744) {
       throw new RangeError(`Invalid Triennial year ${year}`);
     }
@@ -118,10 +168,9 @@ export class Triennial {
 
   /**
    * Returns Hebrew year that this 3-year triennial cycle began
-   * @param {number} year Hebrew year
-   * @return {number}
+   * @param year Hebrew year
    */
-  static getCycleStartYear(year) {
+  static getCycleStartYear(year: number): number {
     return year - (this.getYearNumber(year) - 1);
   }
 
@@ -129,17 +178,15 @@ export class Triennial {
    * First, determine if a doubled parsha is read [T]ogether or [S]eparately
    * in each of the 3 years. Yields a pattern like 'SSS', 'STS', 'TTT', 'TTS'.
    * @private
-   * @param {number} id
-   * @return {string}
    */
-  getThreeYearPattern(id) {
+  getThreeYearPattern(id: number): string {
     let pattern = '';
-    for (let yr = 0; yr <= 2; yr ++) {
+    for (let yr = 0; yr <= 2; yr++) {
       let found = this.sedraArray.indexOf(-1 * id, this.bereshit[yr]);
       if (found > this.bereshit[yr + 1]) {
         found = -1;
       }
-      const pat = (found == -1) ? 'S' : 'T';
+      const pat = found === -1 ? 'S' : 'T';
       pattern += pat;
     }
     return pattern;
@@ -147,20 +194,20 @@ export class Triennial {
 
   /**
    * @private
-   * @return {Map<string,string>}
    */
-  calcVariationOptions() {
-    const map = new Map();
+  calcVariationOptions(): Map<string, string> {
+    const map = new Map<string, string>();
     for (const id of doubled) {
       const pattern = this.getThreeYearPattern(id);
       const name = getDoubledName(id);
       // Next, look up the pattern in JSON to determine readings for each year.
       // For "all-together", use "Y" pattern to imply Y.1, Y.2, Y.3
-      const variation = (pattern === 'TTT') ?
-        'Y' :
-        triennialConfig[name].patterns[pattern];
+      const variation =
+        pattern === 'TTT' ? 'Y' : triennialConfig[name].patterns?.[pattern];
       if (typeof variation === 'undefined') {
-        throw new Error(`Can't find pattern ${pattern} for ${name}, startYear=${this.startYear}`);
+        throw new Error(
+          `Can't find pattern ${pattern} for ${name}, startYear=${this.startYear}`
+        );
       }
       const p1 = parshiot[id];
       const p2 = parshiot[id + 1];
@@ -171,10 +218,7 @@ export class Triennial {
     return map;
   }
 
-  /**
-   * @return {string}
-   */
-  debug() {
+  debug(): string {
     let str = `Triennial cycle started year ${this.startYear}\n`;
     for (const id of doubled) {
       const pattern = this.getThreeYearPattern(id);
@@ -188,10 +232,9 @@ export class Triennial {
   /**
    * Builds a lookup table readings["Bereshit"][0], readings["Matot-Masei"][2]
    * @private
-   * @return {Map<string,Object[]>}
    */
-  cycleReadings() {
-    const readings = new Map();
+  cycleReadings(): Map<string, TriennialAliyot[]> {
+    const readings = new Map<string, TriennialAliyot[]>();
     for (const parsha of parshiot) {
       readings.set(parsha, Array(3));
     }
@@ -200,7 +243,7 @@ export class Triennial {
     for (const parsha of doubledNames) {
       readings.set(parsha, Array(3));
     }
-    for (let yr = 0; yr <= 2; yr ++) {
+    for (let yr = 0; yr <= 2; yr++) {
       this.cycleReadingsForYear(readings, yr);
     }
     return readings;
@@ -208,10 +251,11 @@ export class Triennial {
 
   /**
    * @private
-   * @param {Map<string,Object[]>} readings
-   * @param {number} yr
-  */
-  cycleReadingsForYear(readings, yr) {
+   */
+  cycleReadingsForYear(readings: Map<string, TriennialAliyot[]>, yr: number) {
+    if (!triennialAliyot) {
+      throw new Error();
+    }
     const startIdx = this.bereshit[yr];
     const endIdx = this.bereshit[yr + 1];
     for (let i = startIdx; i < endIdx; i++) {
@@ -219,48 +263,57 @@ export class Triennial {
       if (typeof id !== 'number') {
         continue;
       }
-      const name = (id < 0) ? getDoubledName(-id) : parshiot[id];
-      const variationKey = isSometimesDoubled.has(id) ? this.variationOptions.get(name) : 'Y';
+      const name = id < 0 ? getDoubledName(-id) : parshiot[id];
+      const variationKey = isSometimesDoubled.has(id)
+        ? this.variationOptions.get(name)
+        : 'Y';
       const variation = variationKey + '.' + (yr + 1);
-      const a = triennialAliyot.get(name).get(variation);
-      if (!a) {
-        throw new Error(`can't find ${name} variation ${variation} (year ${yr})`);
+      const variations = triennialAliyot.get(name);
+      if (!variations) {
+        throw new Error(`can't find ${name}??`);
       }
-      const aliyot = clone(a);
+      const a = variations.get(variation);
+      if (!a) {
+        throw new Error(
+          `can't find ${name} variation ${variation} (year ${yr})`
+        );
+      }
+      const aliyot: AliyotMap = clone(a);
       // calculate numVerses for the subset of aliyot that don't cross chapter boundaries
       for (const aliyah of Object.values(aliyot)) {
         calculateNumVerses(aliyah);
       }
-      readings.get(name)[yr] = {
+      readings.get(name)![yr] = {
         aliyot,
-        date: new HDate(this.firstSaturday + (i * 7)),
+        date: new HDate(this.firstSaturday + i * 7),
         variation,
       };
     }
     // create links for doubled
     for (const id of doubled) {
       const h = getDoubledName(id);
-      const combined = readings.get(h)[yr];
+      const combined = readings.get(h)![yr];
       const p1 = parshiot[id];
       const p2 = parshiot[id + 1];
       if (combined) {
-        readings.get(p1)[yr] = readings.get(p2)[yr] = {
+        readings.get(p1)![yr] = readings.get(p2)![yr] = {
           readTogether: h,
           date: combined.date,
           variation: combined.variation,
         };
       } else {
-        const r1 = readings.get(p1)[yr];
-        readings.get(h)[yr] = {
+        const r1 = readings.get(p1)![yr];
+        readings.get(h)![yr] = {
           readSeparately: true,
           date1: r1.date,
-          date2: readings.get(p2)[yr].date,
+          date2: readings.get(p2)![yr].date,
           variation: r1.variation,
         };
       }
     }
-    const vezotAliyot = triennialAliyot.get(VEZOT_HABERAKHAH).get('Y.1');
-    readings.get(VEZOT_HABERAKHAH)[yr] = {
+    const vezot = triennialAliyot.get(VEZOT_HABERAKHAH);
+    const vezotAliyot = vezot!.get('Y.1');
+    readings.get(VEZOT_HABERAKHAH)![yr] = {
       aliyot: clone(vezotAliyot),
       date: new HDate(23, months.TISHREI, this.startYear + yr),
       variation: 'Y.1',
@@ -270,11 +323,9 @@ export class Triennial {
   /**
    * Walks triennialConfig and builds lookup table for triennial aliyot
    * @private
-   * @return {Map}
    */
-  static getTriennialAliyot() {
-    const triennialAliyot = new Map();
-    const triennialAliyotAlt = new Map();
+  static getTriennialAliyot(): Map<string, Map<string, AliyotMap>> {
+    const triennialAliyot = new Map<string, Map<string, AliyotMap>>();
     // build a lookup table so we don't have to follow num/variation/sameas
     for (const [parsha, value] of Object.entries(triennialConfig)) {
       if (typeof value !== 'object' || typeof value.book !== 'number') {
@@ -282,11 +333,7 @@ export class Triennial {
       }
       const book = BOOK[value.book];
       triennialAliyot.set(parsha, Triennial.resolveSameAs(parsha, book, value));
-      if (value.alt) {
-        triennialAliyotAlt.set(parsha, Triennial.resolveSameAs(parsha, book, value.alt));
-      }
     }
-    // TODO: handle triennialAliyotAlt also
     return triennialAliyot;
   }
 
@@ -294,26 +341,29 @@ export class Triennial {
    * Transforms input JSON with sameAs shortcuts like "D.2":"A.3" to
    * actual aliyot objects for a given variation/year
    * @private
-   * @param {string} parsha
-   * @param {string} book
-   * @param {Object} triennial
-   * @return {Map<string,Object>}
    */
-  static resolveSameAs(parsha, book, triennial) {
-    const variations = triennial.years || triennial.variations;
+  static resolveSameAs(
+    parsha: string,
+    book: string,
+    triennial: JsonParsha
+  ): Map<string, AliyotMap> {
+    const variations: JsonVariationMap | JsonAliyotMap | undefined =
+      triennial.years || triennial.variations;
     if (typeof variations === 'undefined') {
       throw new Error(`Parashat ${parsha} has no years or variations`);
     }
     // first pass, copy only alyiot definitions from triennialConfig into lookup table
-    const lookup = new Map();
+    const lookup = new Map<string, AliyotMap>();
     for (const [variation, aliyot] of Object.entries(variations)) {
       if (typeof aliyot === 'object') {
-        const dest = {};
+        const dest: AliyotMap = {};
         for (const [num, src] of Object.entries(aliyot)) {
-          const reading = {k: book, b: src[0], e: src[1]};
+          const reading: Aliyah = {k: book, b: src[0], e: src[1]};
+          /*
           if (src.v) {
             reading.v = src.v;
           }
+          */
           dest[num] = reading;
         }
         lookup.set(variation, dest);
@@ -324,7 +374,9 @@ export class Triennial {
       if (typeof aliyot === 'string') {
         const dest = lookup.get(aliyot);
         if (typeof dest === 'undefined') {
-          throw new Error(`Can't find source for ${parsha} ${variation} sameas=${aliyot}`);
+          throw new Error(
+            `Can't find source for ${parsha} ${variation} sameas=${aliyot}`
+          );
         }
         lookup.set(variation, dest);
       }
@@ -333,15 +385,14 @@ export class Triennial {
   }
 }
 
-const __cache = new Map();
+const __cache = new Map<string, Triennial>();
 
 /**
  * Calculates the 3-year readings for a given year
- * @param {number} year Hebrew year
- * @param {boolean} [il] Israel
- * @return {Triennial}
+ * @param year Hebrew year
+ * @param [il] Israel
  */
-export function getTriennial(year, il=false) {
+export function getTriennial(year: number, il = false): Triennial {
   const cycleStartYear = Triennial.getCycleStartYear(year);
   const prefix = il ? '1-' : '0-';
   const key = prefix + cycleStartYear;

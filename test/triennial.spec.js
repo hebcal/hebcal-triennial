@@ -1,8 +1,7 @@
-import test from 'ava';
 import {HDate} from '@hebcal/core';
-import {Triennial} from './triennial.js';
+import {Triennial} from '../src/triennial';
 
-test('triennial', (t) => {
+test('triennial', () => {
   const tri = new Triennial(5777);
   const expected = [
     {
@@ -18,6 +17,7 @@ test('triennial', (t) => {
       },
       date: new HDate(736413),
       variation: 'Y.1',
+      yearNum: 0,
     },
     {
       aliyot: {
@@ -32,34 +32,37 @@ test('triennial', (t) => {
       },
       date: new HDate(736763),
       variation: 'Y.2',
+      yearNum: 1,
     },
     {
       readSeparately: true,
       date1: new HDate(737120),
       date2: new HDate(737127),
       variation: 'A.3',
+      yearNum: 2,
     },
   ];
   for (let i = 0; i < 3; i++) {
-    t.deepEqual(tri.getReading('Vayakhel-Pekudei', i), expected[i]);
+    expect(tri.getReading('Vayakhel-Pekudei', i)).toEqual(expected[i]);
   }
 });
 
-test('multi', (t) => {
+test('multi', () => {
   for (let year = 5744; year <= 8744; year += 3) {
     try {
       const tri = new Triennial(year);
       for (let yearNum = 0; yearNum <= 2; yearNum++) {
-        t.is(typeof tri.getReading('Vayakhel', yearNum), 'object');
-        t.is(typeof tri.getReading('Pekudei', yearNum), 'object');
+        expect(typeof tri.getReading('Vayakhel', yearNum)).toBe('object');
+        expect(typeof tri.getReading('Pekudei', yearNum)).toBe('object');
       }
     } catch (error) {
-      t.fail();
+      console.log(error);
+      expect(true).toBe(false);
     }
   }
 });
 
-test('Vayakhel-Pekudei', (t) => {
+test('Vayakhel-Pekudei', () => {
   const tri = new Triennial(5831);
   const separate = tri.getReading('Vayakhel-Pekudei', 2);
   const expectedSeparate = {
@@ -67,8 +70,9 @@ test('Vayakhel-Pekudei', (t) => {
     date1: new HDate(756846),
     date2: new HDate(756853),
     variation: 'G.3',
+    yearNum: 2,
   };
-  t.deepEqual(separate, expectedSeparate);
+  expect(separate).toEqual(expectedSeparate);
   const reading = tri.getReading('Vayakhel', 2);
   const expected = {
     aliyot: {
@@ -83,35 +87,39 @@ test('Vayakhel-Pekudei', (t) => {
     },
     date: new HDate(756846),
     variation: 'G.3',
+    yearNum: 2,
   };
-  t.deepEqual(reading, expected);
+  expect(reading).toEqual(expected);
 });
 
-test('readTogether', (t) => {
+test('readTogether', () => {
   const tri = new Triennial(5780);
-  t.deepEqual(tri.getReading('Tazria', 0), {
+  expect(tri.getReading('Tazria', 0)).toEqual({
     readTogether: 'Tazria-Metzora',
     date: new HDate(737540),
     variation: 'Y.1',
+    yearNum: 0,
   });
-  t.deepEqual(tri.getReading('Tazria', 1), {
+  expect(tri.getReading('Tazria', 1)).toEqual({
     readTogether: 'Tazria-Metzora',
     date: new HDate(737897),
     variation: 'Y.2',
+    yearNum: 1,
   });
 });
 
-test('readSeparately', (t) => {
+test('readSeparately', () => {
   const tri = new Triennial(5780);
-  t.deepEqual(tri.getReading('Tazria-Metzora', 2), {
+  expect(tri.getReading('Tazria-Metzora', 2)).toEqual({
     readSeparately: true,
     date1: new HDate(738247),
     date2: new HDate(738254),
     variation: 'A.3',
+    yearNum: 2,
   });
 });
 
-test('Vezot Haberakhah', (t) => {
+test('Vezot Haberakhah', () => {
   const tri = new Triennial(5780);
   const reading = tri.getReading('Vezot Haberakhah', 0);
   const expected = {
@@ -127,11 +135,12 @@ test('Vezot Haberakhah', (t) => {
     date: new HDate(23, 7, 5780),
     fullParsha: true,
     variation: 'Y.1',
+    yearNum: 0,
   };
-  t.deepEqual(reading, expected);
+  expect(reading).toEqual(expected);
 });
 
-test('Triennial.debug', (t) => {
+test('Triennial.debug', () => {
   const tri = new Triennial(5781);
   const lines = tri.debug().split('\n');
   const expected = [
@@ -145,7 +154,7 @@ test('Triennial.debug', (t) => {
     '  Nitzavim-Vayeilech TSS (Y)',
     '',
   ];
-  t.deepEqual(lines, expected);
+  expect(lines).toEqual(expected);
   const tri2 = new Triennial(5797);
   const lines2 = tri2.debug().split('\n');
   const expected2 = [
@@ -159,10 +168,10 @@ test('Triennial.debug', (t) => {
     '  Nitzavim-Vayeilech TST (Y)',
     '',
   ];
-  t.deepEqual(lines2, expected2);
+  expect(lines2).toEqual(expected2);
 });
 
-test('Chukat-Balak 5783', (t) => {
+test('Chukat-Balak 5783', () => {
   const tri = new Triennial(5783);
   const reading = tri.getReading('Chukat-Balak', 0);
   const expected = {
@@ -175,21 +184,21 @@ test('Chukat-Balak 5783', (t) => {
     '7': {k: 'Numbers', b: '21:10', e: '21:20', v: 11},
     'M': {k: 'Numbers', b: '21:17', e: '21:20', v: 4},
   };
-  t.deepEqual(reading.aliyot, expected);
+  expect(reading.aliyot).toEqual(expected);
 });
 
-test('Chukat 5784', (t) => {
+test('Chukat 5784', () => {
   const tri = new Triennial(5784);
   const r1 = tri.getReading('Chukat', 0);
   const r2 = tri.getReading('Chukat', 1);
   const r3 = tri.getReading('Chukat', 2);
-  t.is(r1.variation, 'Y.1');
-  t.is(r2.variation, 'C.2');
-  t.is(r3.variation, 'C.3');
+  expect(r1.variation).toBe('Y.1');
+  expect(r2.variation).toBe('C.2');
+  expect(r3.variation).toBe('C.3');
 });
 
 
-test('Yitro', (t) => {
+test('Yitro', () => {
   const tri = new Triennial(5783);
   const reading1 = tri.getReading('Yitro', 0);
   const reading2 = tri.getReading('Yitro', 1);
@@ -214,7 +223,7 @@ test('Yitro', (t) => {
     '7': {k: 'Exodus', b: '20:19', e: '20:23', v: 5},
     'M': {k: 'Exodus', b: '20:21', e: '20:23', v: 3},
   };
-  t.deepEqual(reading1.aliyot, expected1);
-  t.deepEqual(reading2.aliyot, expected23);
-  t.deepEqual(reading3.aliyot, expected23);
+  expect(reading1.aliyot).toEqual(expected1);
+  expect(reading2.aliyot).toEqual(expected23);
+  expect(reading3.aliyot).toEqual(expected23);
 });

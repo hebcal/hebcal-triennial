@@ -1,8 +1,7 @@
 /* eslint-disable require-jsdoc */
-import test from 'ava';
 import {Writable} from 'stream';
 import {HDate, HolidayEvent, ParshaEvent, months, flags} from '@hebcal/core';
-import {writeTriennialEvent} from './csv.js';
+import {writeTriennialEvent} from '../src/csv';
 
 class StringWritable extends Writable {
   constructor(options) {
@@ -18,7 +17,7 @@ class StringWritable extends Writable {
   }
 }
 
-test('writeTriennialEvent-parsha', (t) => {
+test('writeTriennialEvent-parsha', () => {
   const ev = new ParshaEvent(new HDate(new Date(2022, 3, 30)), ['Achrei Mot']);
   const stream = new StringWritable();
   writeTriennialEvent(stream, ev);
@@ -34,10 +33,10 @@ test('writeTriennialEvent-parsha', (t) => {
     '30-Apr-2022,"Achrei Mot","maf","Leviticus 18:26-18:30",5',
     '30-Apr-2022,"Achrei Mot","Haftara","I Samuel 20:18-42 | Shabbat Machar Chodesh",25',
     '', ''];
-  t.deepEqual(lines, expected);
+  expect(lines).toEqual(expected);
 });
 
-test('writeTriennialEvent-holiday', (t) => {
+test('writeTriennialEvent-holiday', () => {
   const ev = new HolidayEvent(new HDate(6, months.SIVAN, 5777),
       'Shavuot I', flags.CHAG | flags.LIGHT_CANDLES_TZEIS | flags.CHUL_ONLY);
   const stream = new StringWritable();
@@ -52,10 +51,10 @@ test('writeTriennialEvent-holiday', (t) => {
     '31-May-2017,"Shavuot I","maf","Numbers 28:26-28:31",6',
     '31-May-2017,"Shavuot I","Haftara","Ezekiel 1:1-28; 3:12",29',
     '', ''];
-  t.deepEqual(lines, expected);
+  expect(lines).toEqual(expected);
 });
 
-test('writeTriennialEvent-parsha-alt-haftara', (t) => {
+test('writeTriennialEvent-parsha-alt-haftara', () => {
   const ev = new ParshaEvent(new HDate(new Date(2016, 10, 19)), ['Vayera']);
   const stream = new StringWritable();
   writeTriennialEvent(stream, ev);
@@ -73,10 +72,10 @@ test('writeTriennialEvent-parsha-alt-haftara', (t) => {
     '19-Nov-2016,"Vayera","Haftara for Sephardim","II Kings 4:1-23",23',
     '19-Nov-2016,"Vayera","Alternate Haftara","II Kings 4:8-17",10',
     '', ''];
-  t.deepEqual(lines, expected);
+  expect(lines).toEqual(expected);
 });
 
-test('writeTriennialEvent-holiday-alt-haftara', (t) => {
+test('writeTriennialEvent-holiday-alt-haftara', () => {
   const ev = new HolidayEvent(new HDate(16, months.TISHREI, 5789),
       'Sukkot II', flags.CHAG | flags.YOM_TOV_ENDS | flags.CHUL_ONLY);
   const stream = new StringWritable();
@@ -92,10 +91,10 @@ test('writeTriennialEvent-holiday-alt-haftara', (t) => {
     '06-Oct-2028,"Sukkot II","Haftara","I Kings 8:2-21",20',
     '06-Oct-2028,"Sukkot II","Alternate Haftara","I Kings 8:2-13",12',
     '', ''];
-  t.deepEqual(lines, expected);
+  expect(lines).toEqual(expected);
 });
 
-test('writeTriennialEvent-il', (t) => {
+test('writeTriennialEvent-il', () => {
   const hd = new HDate(7, 'Sivan', 5783);
   const ev = new ParshaEvent(hd, ['Nasso'], true);
   const stream = new StringWritable();
@@ -113,5 +112,5 @@ test('writeTriennialEvent-il', (t) => {
     '27-May-2023,"Nasso","Haftara","Judges 13:2-25",24',
     '27-May-2023,"Nasso","Alternate Haftara","Joshua 6:5-14; 6:12",11',
     '', ''];
-  t.deepEqual(lines, expected);
+  expect(lines).toEqual(expected);
 });

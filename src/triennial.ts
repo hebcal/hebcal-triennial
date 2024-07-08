@@ -93,12 +93,12 @@ const triennialConfig = triennialConfig0 as Parshiyot;
 
 /** Triennial Torah readings */
 export class Triennial {
-  startYear: number;
-  sedraArray: (number | string)[];
-  bereshit: number[];
-  firstSaturday: number;
-  variationOptions: Map<string, string>;
-  readings: Map<string, TriennialAliyot[]>;
+  private startYear: number;
+  private sedraArray: (number | string)[];
+  private bereshit: number[];
+  private firstSaturday: number;
+  private variationOptions: Map<string, string>;
+  private readings: Map<string, TriennialAliyot[]>;
   /**
    * Calculates Triennial schedule for entire Hebrew year
    * @param [hebrewYear] Hebrew Year (default current year)

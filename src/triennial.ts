@@ -94,6 +94,7 @@ const triennialConfig = triennialConfig0 as Parshiyot;
 /** Triennial Torah readings */
 export class Triennial {
   private startYear: number;
+  private il: boolean;
   private sedraArray: (number | string)[];
   private bereshit: number[];
   private firstSaturday: number;
@@ -114,6 +115,7 @@ export class Triennial {
     }
 
     this.startYear = Triennial.getCycleStartYear(hebrewYear);
+    this.il = il;
     this.sedraArray = [];
     this.bereshit = Array(4);
     for (let yr = 0; yr < 4; yr++) {
@@ -160,6 +162,10 @@ export class Triennial {
 
   getStartYear(): number {
     return this.startYear;
+  }
+
+  getIsrael(): boolean {
+    return this.il;
   }
 
   /**
@@ -315,9 +321,10 @@ export class Triennial {
     }
     const vezot = triennialAliyot.get(VEZOT_HABERAKHAH);
     const vezotAliyot = vezot!.get('Y.1');
+    const mday = this.il ? 22 : 23;
     readings.get(VEZOT_HABERAKHAH)![yr] = {
       aliyot: clone(vezotAliyot),
-      date: new HDate(23, months.TISHREI, this.startYear + yr),
+      date: new HDate(mday, months.TISHREI, this.startYear + yr),
       variation: 'Y.1',
     };
   }

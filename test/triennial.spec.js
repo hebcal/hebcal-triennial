@@ -120,7 +120,7 @@ test('readSeparately', () => {
 });
 
 test('Vezot Haberakhah', () => {
-  const tri = new Triennial(5780);
+  const tri = new Triennial(5780, false);
   const reading = tri.getReading('Vezot Haberakhah', 0);
   const expected = {
     aliyot: {
@@ -138,6 +138,10 @@ test('Vezot Haberakhah', () => {
     yearNum: 0,
   };
   expect(reading).toEqual(expected);
+
+  const triIsrael = new Triennial(5780, true);
+  const reading2 = triIsrael.getReading('Vezot Haberakhah', 0);
+  expect(reading2.date).toEqual(new HDate(22, 7, 5780));
 });
 
 test('Triennial.debug', () => {
@@ -243,4 +247,18 @@ test('getYearNumber-throws', () => {
   expect(() => {
     Triennial.getYearNumber(1234);
   }).toThrow('Invalid Triennial year 1234');
+});
+
+test('reason/note', () => {
+  const tri = new Triennial(5784);
+  const reading = tri.getReading('Ki Tavo', 1);
+  expect(reading.variation).toBe('Y.2');
+  const expected = {
+    b: '27:6',
+    e: '27:10',
+    k: 'Deuteronomy',
+    reason: 'verses 27:6-8, which are part of the 4th aliyah, are read again in the 5th aliyah',
+    v: 5,
+  };
+  expect(reading.aliyot['5']).toEqual(expected);
 });

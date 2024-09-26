@@ -352,6 +352,9 @@ function resolveSameAs(
       const dest: AliyotMap = {};
       for (const [num, src] of Object.entries(aliyot)) {
         const reading: Aliyah = {k: book, b: src[0], e: src[1]};
+        if (src.length === 3) {
+          reading.reason = src[2];
+        }
         dest[num] = reading;
       }
       lookup.set(variation, dest);

@@ -4,6 +4,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 const json = require('@rollup/plugin-json');
 const terser = require('@rollup/plugin-terser');
 const pkg = require('./package.json');
+const {defineConfig} = require('rollup');
 
 const banner = '/*! ' + pkg.name + ' v' + pkg.version + ' */';
 
@@ -27,12 +28,24 @@ const iifeGlobals = {
   '@hebcal/leyning/dist/esm/getLeyningForHoliday': 'hebcal__leyning',
 };
 
-module.exports = [
+const tsOptions = {rootDir: './src'};
+module.exports = defineConfig([
   {
     input: 'src/index.ts',
-    output: [{file: pkg.module, format: 'es', name: pkg.name, banner}],
+    output: {
+      dir: 'dist/esm',
+      format: 'es',
+      preserveModules: true,
+      preserveModulesRoot: 'src',
+      name: pkg.name,
+      banner,
+    },
     external: [/@hebcal\//],
-    plugins: [typescript(), json({compact: true, preferConst: true})],
+    plugins: [
+      typescript({...tsOptions, outDir: 'dist/esm'}),
+      commonjs(),
+      nodeResolve(),
+      json({compact: true, preferConst: true})],
   },
   {
     input: 'src/index.ts',
@@ -62,4 +75,4 @@ module.exports = [
       commonjs(),
     ],
   },
-];
+]);

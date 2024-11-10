@@ -1,4 +1,4 @@
-import {HDate} from '@hebcal/core';
+import {HDate} from '@hebcal/hdate';
 import {Triennial} from '../src/triennial';
 
 test('triennial', () => {

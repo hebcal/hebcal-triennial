@@ -7,28 +7,32 @@ const pkg = require('./package.json');
 
 const banner = '/*! ' + pkg.name + ' v' + pkg.version + ' */';
 
+const iifeGlobals = {
+  '@hebcal/hdate': 'hebcal',
+  '@hebcal/core': 'hebcal',
+  '@hebcal/core/dist/esm/locale': 'hebcal',
+  '@hebcal/core/dist/esm/holidays': 'hebcal',
+  '@hebcal/core/dist/esm/sedra': 'hebcal',
+  '@hebcal/core/dist/esm/event': 'hebcal',
+  '@hebcal/core/dist/esm/ParshaEvent': 'hebcal',
+  '@hebcal/core/dist/esm/parshaYear': 'hebcal',
+  '@hebcal/leyning': 'hebcal__leyning',
+  '@hebcal/leyning/dist/esm/leyning': 'hebcal__leyning',
+  '@hebcal/leyning/dist/esm/csv': 'hebcal__leyning_csv',
+  '@hebcal/leyning/dist/esm/summary': 'hebcal__leyning',
+  '@hebcal/leyning/dist/esm/clone': 'hebcal__leyning',
+  '@hebcal/leyning/dist/esm/getLeyningKeyForEvent': 'hebcal__leyning',
+  '@hebcal/leyning/dist/esm/specialReadings': 'hebcal__leyning',
+  '@hebcal/leyning/dist/esm/common': 'hebcal__leyning',
+  '@hebcal/leyning/dist/esm/getLeyningForHoliday': 'hebcal__leyning',
+};
+
 module.exports = [
   {
     input: 'src/index.ts',
-    output: [
-      {file: pkg.main, format: 'cjs', name: pkg.name, banner},
-    ],
-    external: ['@hebcal/leyning', '@hebcal/core'],
-    plugins: [
-      typescript(),
-      json({compact: true, preferConst: true}),
-    ],
-  },
-  {
-    input: 'src/index.ts',
-    output: [
-      {file: pkg.module, format: 'es', name: pkg.name, banner},
-    ],
-    external: ['@hebcal/leyning', '@hebcal/core'],
-    plugins: [
-      typescript(),
-      json({compact: true, preferConst: true}),
-    ],
+    output: [{file: pkg.module, format: 'es', name: pkg.name, banner}],
+    external: [/@hebcal\//],
+    plugins: [typescript(), json({compact: true, preferConst: true})],
   },
   {
     input: 'src/index.ts',
@@ -37,10 +41,7 @@ module.exports = [
         file: 'dist/bundle.js',
         format: 'iife',
         name: 'hebcal__triennial',
-        globals: {
-          '@hebcal/core': 'hebcal',
-          '@hebcal/leyning': 'hebcal__leyning',
-        },
+        globals: iifeGlobals,
         indent: false,
         banner,
       },
@@ -48,15 +49,12 @@ module.exports = [
         file: 'dist/bundle.min.js',
         format: 'iife',
         name: 'hebcal__triennial',
-        globals: {
-          '@hebcal/core': 'hebcal',
-          '@hebcal/leyning': 'hebcal__leyning',
-        },
+        globals: iifeGlobals,
         plugins: [terser()],
         banner,
       },
     ],
-    external: ['@hebcal/leyning', '@hebcal/core'],
+    external: [/@hebcal\//],
     plugins: [
       typescript(),
       json({compact: true, preferConst: true}),

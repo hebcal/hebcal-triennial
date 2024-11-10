@@ -1,29 +1,26 @@
-import {Event, HebrewCalendar, HolidayEvent, flags} from '@hebcal/core';
+import {Event, flags} from '@hebcal/core/dist/esm/event';
+import {HolidayEvent} from '@hebcal/core/dist/esm/HolidayEvent';
+import {getHolidaysForYearArray} from '@hebcal/core/dist/esm/holidays';
+import {getLeyningForParshaHaShavua} from '@hebcal/leyning/dist/esm/leyning';
+import {getLeyningKeyForEvent} from '@hebcal/leyning/dist/esm/getLeyningKeyForEvent';
+import {getLeyningForHoliday} from '@hebcal/leyning/dist/esm/getLeyningForHoliday';
 import {
-  getLeyningForHoliday,
-  getLeyningForParshaHaShavua,
-  getLeyningKeyForEvent,
   getParshaDates,
   writeCsvLines,
   writeHolidayMincha,
-} from '@hebcal/leyning';
+} from '@hebcal/leyning/dist/esm/csv';
 import {WriteStream} from 'node:fs';
 import {getTriennialHaftaraForHoliday} from './haftara';
 import {getTriennialForParshaHaShavua} from './parshaHaShavua';
 import {Triennial} from './triennial';
+import {parshaYear} from '@hebcal/core/dist/esm/parshaYear';
 
 export function writeTriennialCsv(
   stream: WriteStream,
   hyear: number,
   il = false
 ) {
-  const events0 = HebrewCalendar.calendar({
-    year: hyear,
-    isHebrewYear: true,
-    numYears: 3,
-    sedrot: true,
-    il: il,
-  });
+  const events0 = getParshaAndHolidayEvents(hyear, il);
   const events = events0.filter(ev => ev.getDesc() !== 'Rosh Chodesh Tevet');
   const parshaDates = getParshaDates(events);
   stream.write('"Date","Parashah","Aliyah","Triennial Reading","Verses"\r\n');
@@ -35,6 +32,20 @@ export function writeTriennialCsv(
       writeTriennialEvent(stream, ev, il);
     }
   }
+}
+
+function getParshaAndHolidayEvents(hyear: number, il: boolean): Event[] {
+  let result: Event[] = [];
+  for (let i = 0; i < 3; i++) {
+    console.log(i);
+    const year = hyear + i;
+    let events: Event[] = parshaYear(year, il);
+    const holidays = getHolidaysForYearArray(year, il);
+    events = events.concat(holidays);
+    events.sort((a, b) => a.getDate().abs() - b.getDate().abs());
+    result = result.concat(events);
+  }
+  return result;
 }
 
 /**

@@ -1,5 +1,8 @@
-import {Event, flags, months, ParshaEvent} from '@hebcal/core';
-import {parshaToString, specialReadings2} from '@hebcal/leyning';
+import {months} from '@hebcal/hdate';
+import {Event, flags} from '@hebcal/core/dist/esm/event';
+import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
+import {parshaToString} from '@hebcal/leyning/dist/esm/common';
+import {specialReadings2} from '@hebcal/leyning/dist/esm/specialReadings';
 import {getTriennialHaftara} from './haftara';
 import {getTriennial, TriennialAliyot} from './triennial';
 

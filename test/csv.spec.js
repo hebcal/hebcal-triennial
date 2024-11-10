@@ -1,6 +1,9 @@
 /* eslint-disable require-jsdoc */
 import {Writable} from 'stream';
-import {HDate, HolidayEvent, ParshaEvent, months, flags} from '@hebcal/core';
+import {flags} from '@hebcal/core/dist/esm/event';
+import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
+import {HolidayEvent} from '@hebcal/core/dist/esm/HolidayEvent';
+import {HDate, months} from '@hebcal/hdate';
 import {writeTriennialEvent} from '../src/csv';
 
 class StringWritable extends Writable {

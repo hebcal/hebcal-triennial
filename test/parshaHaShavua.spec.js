@@ -1,6 +1,9 @@
-import {HebrewCalendar, HDate, months, flags, ParshaEvent, Event} from '@hebcal/core';
+import {HDate, months} from '@hebcal/hdate';
+import {Event, flags} from '@hebcal/core/dist/esm/event';
+import {HebrewCalendar} from '@hebcal/core/dist/esm/hebcal';
+import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
 import {getTriennialForParshaHaShavua} from '../src/parshaHaShavua';
-import {formatAliyahWithBook} from '@hebcal/leyning';
+import {formatAliyahWithBook} from '@hebcal/leyning/dist/esm/common';
 
 test('getTriennialForParshaHaShavua', () => {
   const options = {

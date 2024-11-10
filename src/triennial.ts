@@ -1,12 +1,8 @@
-import {HDate, HebrewCalendar, months, parshiot} from '@hebcal/core';
-import {
-  Aliyah,
-  AliyotMap,
-  BOOK,
-  calculateNumVerses,
-  clone,
-  StringMap,
-} from '@hebcal/leyning';
+import {HDate, months} from '@hebcal/hdate';
+import {parshiot, getSedra} from '@hebcal/core/dist/esm/sedra';
+import {Aliyah, AliyotMap, StringMap} from '@hebcal/leyning/dist/esm/types';
+import {BOOK, calculateNumVerses} from '@hebcal/leyning/dist/esm/common';
+import {clone} from '@hebcal/leyning/dist/esm/clone';
 import triennialConfig0 from './triennial.json';
 
 /**
@@ -119,7 +115,7 @@ export class Triennial {
     this.sedraArray = [];
     this.bereshit = Array(4);
     for (let yr = 0; yr < 4; yr++) {
-      const sedra = HebrewCalendar.getSedra(this.startYear + yr, il);
+      const sedra = getSedra(this.startYear + yr, il);
       const arr = sedra.getSedraArray();
       this.bereshit[yr] = this.sedraArray.length + arr.indexOf(0);
       this.sedraArray = this.sedraArray.concat(arr);

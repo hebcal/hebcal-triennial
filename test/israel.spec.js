@@ -1,5 +1,6 @@
-import {HDate, ParshaEvent} from '@hebcal/core';
-import {makeLeyningParts, makeSummaryFromParts} from '@hebcal/leyning';
+import {HDate} from '@hebcal/hdate';
+import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
+import {makeLeyningParts, makeSummaryFromParts} from '@hebcal/leyning/dist/esm/summary';
 import {Triennial} from '../src/triennial';
 import {getTriennialForParshaHaShavua} from '../src/parshaHaShavua';
 

@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {HDate} from '@hebcal/hdate';
 import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
 import {makeLeyningParts, makeSummaryFromParts} from '@hebcal/leyning/dist/esm/summary';

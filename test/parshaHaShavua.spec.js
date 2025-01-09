@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {HDate, months} from '@hebcal/hdate';
 import {Event, flags} from '@hebcal/core/dist/esm/event';
 import {HebrewCalendar} from '@hebcal/core/dist/esm/hebcal';

@@ -43,8 +43,6 @@ module.exports = defineConfig([
     external: [/@hebcal\//],
     plugins: [
       typescript({...tsOptions, outDir: 'dist/esm'}),
-      commonjs(),
-      nodeResolve(),
       json({compact: true, preferConst: true})],
   },
   {

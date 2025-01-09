@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 import {HDate} from '@hebcal/hdate';
 import {Triennial} from '../src/triennial';
 

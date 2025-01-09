@@ -1,4 +1,5 @@
 /* eslint-disable require-jsdoc */
+import {expect, test} from 'vitest';
 import {Writable} from 'stream';
 import {flags} from '@hebcal/core/dist/esm/event';
 import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';

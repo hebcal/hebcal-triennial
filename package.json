@@ -9,6 +9,9 @@
     "./dist/esm/*": "./dist/esm/*.js"
   },
   "typings": "dist/esm/index.d.ts",
+  "engines": {
+    "node": ">= 18.0.0"
+  },
   "scripts": {
     "build:rollup": "rollup -c",
     "build": "npm run build:rollup",

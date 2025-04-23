@@ -1,3 +1,4 @@
+import {expect, test} from 'vitest';
 /* eslint-disable require-jsdoc */
 import {expect, test} from 'vitest';
 import {Writable} from 'stream';

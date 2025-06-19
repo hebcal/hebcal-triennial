@@ -1,6 +1,5 @@
 const typescript = require('@rollup/plugin-typescript');
 const {nodeResolve} = require('@rollup/plugin-node-resolve');
-const commonjs = require('@rollup/plugin-commonjs');
 const json = require('@rollup/plugin-json');
 const terser = require('@rollup/plugin-terser');
 const pkg = require('./package.json');
@@ -70,7 +69,6 @@ module.exports = defineConfig([
       typescript(),
       json({compact: true, preferConst: true}),
       nodeResolve(),
-      commonjs(),
     ],
   },
 ]);

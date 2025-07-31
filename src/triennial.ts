@@ -1,6 +1,11 @@
 import {HDate, months} from '@hebcal/hdate';
 import {parshiot, getSedra} from '@hebcal/core/dist/esm/sedra';
-import {Aliyah, AliyotMap, StringMap} from '@hebcal/leyning/dist/esm/types';
+import {
+  Aliyah,
+  AliyotMap,
+  StringMap,
+  TorahBook,
+} from '@hebcal/leyning/dist/esm/types';
 import {BOOK, calculateNumVerses} from '@hebcal/leyning/dist/esm/common';
 import {clone} from '@hebcal/leyning/dist/esm/clone';
 import triennialConfig0 from './triennial.json';
@@ -66,11 +71,11 @@ let triennialAliyot: Map<string, Map<string, AliyotMap>>;
 
 type JsonAliyah = string[];
 
-type JsonAliyot = {[key: string]: JsonAliyah};
+type JsonAliyot = Record<string, JsonAliyah>;
 
-type JsonAliyotMap = {[key: string]: JsonAliyot};
+type JsonAliyotMap = Record<string, JsonAliyot>;
 
-type JsonVariationMap = {[key: string]: JsonAliyot | string};
+type JsonVariationMap = Record<string, JsonAliyot | string>;
 
 type JsonParsha = {
   book: number;
@@ -81,9 +86,7 @@ type JsonParsha = {
   patterns?: StringMap;
 };
 
-type Parshiyot = {
-  [key: string]: JsonParsha;
-};
+type Parshiyot = Record<string, JsonParsha>;
 
 const triennialConfig = triennialConfig0 as Parshiyot;
 
@@ -333,7 +336,7 @@ export class Triennial {
  */
 function resolveSameAs(
   parsha: string,
-  book: string,
+  book: TorahBook,
   triennial: JsonParsha
 ): Map<string, AliyotMap> {
   const variations: JsonVariationMap | JsonAliyotMap | undefined =

@@ -15,13 +15,12 @@ export type TriHaftarah = {
 
 type TriennialHaftAliyah = Aliyah & {note?: string};
 
-type TriennialHaftYearMap = {
-  [key: string]: TriennialHaftAliyah | TriennialHaftAliyah[];
-};
+type TriennialHaftYearMap = Record<
+  string,
+  TriennialHaftAliyah | TriennialHaftAliyah[]
+>;
 
-type TriennialHaft = {
-  [key: string]: TriennialHaftYearMap;
-};
+type TriennialHaft = Record<string, TriennialHaftYearMap>;
 
 const triennialHaft = triennialHaft0 as TriennialHaft;
 

@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/triennial",
-  "version": "6.0.3",
+  "version": "6.0.4",
   "description": "Javascript Triennial Torah Readings",
   "module": "./dist/esm/index.js",
   "type": "module",
@@ -34,22 +34,22 @@
   "homepage": "https://hebcal.github.io/api/triennial/",
   "dependencies": {
     "@hebcal/core": "^5.10.1",
-    "@hebcal/hdate": "^0.14.3",
-    "@hebcal/leyning": "^9.2.4"
+    "@hebcal/hdate": "^0.14.5",
+    "@hebcal/leyning": "^9.2.5"
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-node-resolve": "^16.0.2",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.4",
-    "@types/node": "^24.1.0",
+    "@types/node": "^24.7.2",
     "gts": "^5.3.1",
-    "rollup": "^4.46.2",
-    "typedoc": "^0.28.8",
-    "typescript": "^5.8.3",
+    "rollup": "^4.52.4",
+    "typedoc": "^0.28.14",
+    "typescript": "^5.9.3",
     "vitest": "^3.2.4"
   }
 }

@@ -187,7 +187,7 @@ test('Chukat-Balak 5783', () => {
     '5': {k: 'Numbers', b: '20:14', e: '20:21', v: 8},
     '6': {k: 'Numbers', b: '20:22', e: '21:9', v: 17},
     '7': {k: 'Numbers', b: '21:10', e: '21:20', v: 11},
-    'M': {k: 'Numbers', b: '21:17', e: '21:20', v: 4},
+    'M': {k: 'Numbers', b: '21:16', e: '21:20', v: 5},
   };
   expect(reading.aliyot).toEqual(expected);
 });

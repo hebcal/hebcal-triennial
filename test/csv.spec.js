@@ -23,7 +23,7 @@ class StringWritable extends Writable {
 }
 
 test('writeTriennialEvent-parsha', () => {
-  const ev = new ParshaEvent(new HDate(new Date(2022, 3, 30)), ['Achrei Mot']);
+  const ev = new ParshaEvent({hdate: new HDate(new Date(2022, 3, 30)), parsha: ['Achrei Mot']});
   const stream = new StringWritable();
   writeTriennialEvent(stream, ev);
   const lines = stream.toString().split('\r\n');
@@ -60,7 +60,7 @@ test('writeTriennialEvent-holiday', () => {
 });
 
 test('writeTriennialEvent-parsha-alt-haftara', () => {
-  const ev = new ParshaEvent(new HDate(new Date(2016, 10, 19)), ['Vayera']);
+  const ev = new ParshaEvent({hdate: new HDate(new Date(2016, 10, 19)), parsha: ['Vayera']});
   const stream = new StringWritable();
   writeTriennialEvent(stream, ev);
   const lines = stream.toString().split('\r\n');
@@ -101,7 +101,7 @@ test('writeTriennialEvent-holiday-alt-haftara', () => {
 
 test('writeTriennialEvent-il', () => {
   const hd = new HDate(7, 'Sivan', 5783);
-  const ev = new ParshaEvent(hd, ['Nasso'], true);
+  const ev = new ParshaEvent({hdate: hd, parsha: ['Nasso'], il: true});
   const stream = new StringWritable();
   writeTriennialEvent(stream, ev, true);
   const lines = stream.toString().split('\r\n');

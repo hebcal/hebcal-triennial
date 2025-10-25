@@ -159,7 +159,7 @@ test('multi', () => {
 
 test('getTriennialForParshaHaShavua', () => {
   const hd = new HDate(7, 'Sivan', 5783);
-  const pe = new ParshaEvent(hd, ['Nasso'], true);
+  const pe = new ParshaEvent({hdate: hd, parsha: ['Nasso'], il: true});
   const reading = getTriennialForParshaHaShavua(pe, true);
   const expected = {
     '1': {k: 'Numbers', b: '4:21', e: '4:24', v: 4},

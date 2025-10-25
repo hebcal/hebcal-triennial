@@ -255,7 +255,7 @@ test('triennial-haft', () => {
 
 test('no-triennial-haft-on-special', () => {
   const hd = new HDate(29, 'Tishrei', 5784);
-  const ev = new ParshaEvent(hd, ['Bereshit'], false);
+  const ev = new ParshaEvent({hdate: hd, parsha: ['Bereshit'], il: false});
   const reading = getTriennialForParshaHaShavua(ev, false);
   expect(reading.haft).not.toBeDefined();
   expect(reading.haftara).not.toBeDefined();

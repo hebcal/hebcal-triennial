@@ -1,3 +1,4 @@
+import QuickLRU from 'quick-lru';
 import {HDate, months} from '@hebcal/hdate';
 import {parshiot, getSedra} from '@hebcal/core/dist/esm/sedra';
 import {
@@ -392,7 +393,7 @@ function makeTriennialAliyot(): Map<string, Map<string, AliyotMap>> {
   return triennialAliyot;
 }
 
-const __cache = new Map<string, Triennial>();
+const __cache = new QuickLRU<string, Triennial>({maxSize: 100});
 
 /**
  * Calculates the 3-year readings for a given year

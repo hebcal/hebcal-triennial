@@ -39,7 +39,7 @@ module.exports = defineConfig([
       name: pkg.name,
       banner,
     },
-    external: [/@hebcal\//],
+    external: [/@hebcal\//, 'quick-lru'],
     plugins: [
       typescript({...tsOptions, outDir: 'dist/esm'}),
       json({compact: true, preferConst: true})],

@@ -37,7 +37,6 @@ export function writeTriennialCsv(
 function getParshaAndHolidayEvents(hyear: number, il: boolean): Event[] {
   let result: Event[] = [];
   for (let i = 0; i < 3; i++) {
-    console.log(i);
     const year = hyear + i;
     let events: Event[] = parshaYear(year, il);
     const holidays = getHolidaysForYearArray(year, il);

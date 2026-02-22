@@ -97,7 +97,7 @@ function writeTriennialEventParsha(
   il: boolean
 ) {
   const triReading = getTriennialForParshaHaShavua(ev, il);
-  if (triReading && triReading.aliyot) {
+  if (triReading?.aliyot) {
     const reading = getLeyningForParshaHaShavua(ev, il);
     reading.fullkriyah = triReading.aliyot;
     reading.triHaftara = triReading.haftara;

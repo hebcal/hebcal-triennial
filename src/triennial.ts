@@ -8,7 +8,6 @@ import {
   TorahBook,
 } from '@hebcal/leyning/dist/esm/types';
 import {BOOK, calculateNumVerses} from '@hebcal/leyning/dist/esm/common';
-import {clone} from '@hebcal/leyning/dist/esm/clone';
 import triennialConfig0 from './triennial.json';
 
 /**
@@ -91,15 +90,22 @@ type Parshiyot = Record<string, JsonParsha>;
 
 const triennialConfig = triennialConfig0 as Parshiyot;
 
+class InternalError extends Error {
+  constructor(message?: string) {
+    super(message);
+    this.name = 'InternalError';
+  }
+}
+
 /** Triennial Torah readings */
 export class Triennial {
-  private startYear: number;
-  private il: boolean;
-  private sedraArray: (number | string)[];
-  private bereshit: number[];
-  private firstSaturday: number;
-  private variationOptions: Map<string, string>;
-  private readings: Map<string, TriennialAliyot[]>;
+  private readonly startYear: number;
+  private readonly il: boolean;
+  private readonly sedraArray: (number | string)[];
+  private readonly bereshit: number[];
+  private readonly firstSaturday: number;
+  private readonly variationOptions: Map<string, string>;
+  private readonly readings: Map<string, TriennialAliyot[]>;
   /**
    * Calculates Triennial schedule for entire Hebrew year
    * @param [hebrewYear] Hebrew Year (default current year)
@@ -117,7 +123,7 @@ export class Triennial {
     this.startYear = Triennial.getCycleStartYear(hebrewYear);
     this.il = il;
     this.sedraArray = [];
-    this.bereshit = Array(4);
+    this.bereshit = new Array(4);
     for (let yr = 0; yr < 4; yr++) {
       const sedra = getSedra(this.startYear + yr, il);
       const arr = sedra.getSedraArray();
@@ -149,7 +155,7 @@ export class Triennial {
     const reading0 = years[yearNum];
     const reading: TriennialAliyot = {...reading0};
     if (reading.aliyot) {
-      Object.values(reading.aliyot).map((aliyah: Aliyah) =>
+      Object.values(reading.aliyot).forEach((aliyah: Aliyah) =>
         calculateNumVerses(aliyah)
       );
     }
@@ -213,8 +219,8 @@ export class Triennial {
       // For "all-together", use "Y" pattern to imply Y.1, Y.2, Y.3
       const variation =
         pattern === 'TTT' ? 'Y' : triennialConfig[name].patterns?.[pattern];
-      if (typeof variation === 'undefined') {
-        throw new Error(
+      if (variation === undefined) {
+        throw new TypeError(
           `Can't find pattern ${pattern} for ${name}, startYear=${this.startYear}`
         );
       }
@@ -244,12 +250,12 @@ export class Triennial {
   private cycleReadings(): Map<string, TriennialAliyot[]> {
     const readings = new Map<string, TriennialAliyot[]>();
     for (const parsha of parshiot) {
-      readings.set(parsha, Array(3));
+      readings.set(parsha, new Array(3));
     }
-    readings.set(VEZOT_HABERAKHAH, Array(3));
+    readings.set(VEZOT_HABERAKHAH, new Array(3));
     const doubledNames = doubled.map(getDoubledName);
     for (const parsha of doubledNames) {
-      readings.set(parsha, Array(3));
+      readings.set(parsha, new Array(3));
     }
     for (let yr = 0; yr <= 2; yr++) {
       this.cycleReadingsForYear(readings, yr);
@@ -262,7 +268,7 @@ export class Triennial {
     yr: number
   ) {
     if (!triennialAliyot) {
-      throw new Error();
+      throw new InternalError();
     }
     const startIdx = this.bereshit[yr];
     const endIdx = this.bereshit[yr + 1];
@@ -278,15 +284,15 @@ export class Triennial {
       const variation = variationKey + '.' + (yr + 1);
       const variations = triennialAliyot.get(name);
       if (!variations) {
-        throw new Error(`can't find ${name}??`);
+        throw new InternalError(`can't find ${name}??`);
       }
       const a = variations.get(variation);
       if (!a) {
-        throw new Error(
+        throw new InternalError(
           `can't find ${name} variation ${variation} (year ${yr})`
         );
       }
-      const aliyot: AliyotMap = clone(a);
+      const aliyot: AliyotMap = structuredClone(a);
       // calculate numVerses for the subset of aliyot that don't cross chapter boundaries
       for (const aliyah of Object.values(aliyot)) {
         calculateNumVerses(aliyah);
@@ -323,7 +329,7 @@ export class Triennial {
     const vezotAliyot = vezot!.get('Y.1');
     const mday = this.il ? 22 : 23;
     readings.get(VEZOT_HABERAKHAH)![yr] = {
-      aliyot: clone(vezotAliyot),
+      aliyot: structuredClone(vezotAliyot),
       date: new HDate(mday, months.TISHREI, this.startYear + yr),
       variation: 'Y.1',
     };
@@ -342,7 +348,7 @@ function resolveSameAs(
 ): Map<string, AliyotMap> {
   const variations: JsonVariationMap | JsonAliyotMap | undefined =
     triennial.years || triennial.variations;
-  if (typeof variations === 'undefined') {
+  if (variations === undefined) {
     throw new Error(`Parashat ${parsha} has no years or variations`);
   }
   // first pass, copy only alyiot definitions from triennialConfig into lookup table
@@ -364,8 +370,8 @@ function resolveSameAs(
   for (const [variation, aliyot] of Object.entries(variations)) {
     if (typeof aliyot === 'string') {
       const dest = lookup.get(aliyot);
-      if (typeof dest === 'undefined') {
-        throw new Error(
+      if (dest === undefined) {
+        throw new InternalError(
           `Can't find source for ${parsha} ${variation} sameas=${aliyot}`
         );
       }
@@ -384,7 +390,7 @@ function makeTriennialAliyot(): Map<string, Map<string, AliyotMap>> {
   // build a lookup table so we don't have to follow num/variation/sameas
   for (const [parsha, value] of Object.entries(triennialConfig)) {
     if (typeof value !== 'object' || typeof value.book !== 'number') {
-      throw new Error(`misconfiguration: ${parsha}`);
+      throw new InternalError(`misconfiguration: ${parsha}`);
     }
     const book = BOOK[value.book];
     const lookup = resolveSameAs(parsha, book, value);
@@ -393,7 +399,7 @@ function makeTriennialAliyot(): Map<string, Map<string, AliyotMap>> {
   return triennialAliyot;
 }
 
-const __cache = new QuickLRU<string, Triennial>({maxSize: 100});
+const __cache = new QuickLRU<string, Triennial>({maxSize: 25});
 
 /**
  * Calculates the 3-year readings for a given year

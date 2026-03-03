@@ -249,7 +249,8 @@
  "3":{"k":"Zechariah","b":"8:1","e":"8:8","note":"be'emet u-vitzdakah"}
 },
 "Re'eh":{
- "1":{"k":"Isaiah","b":"54:11","e":"55:5**","note":"aniya soarah"},
+ "1":{"k":"Isaiah","b":"54:11","e":"55:5","note":"aniya soarah",
+  "note2":"when this haftarah is pre-empted by Rosh Hodesh, it has been the tradition to recite it at the end of the haftarah of the fifth week of nechemta, in its natural order. Those who wish may do so, but there is no need to, as the resulting double haftarah would be quite long"},
  "2":{"k":"Isaiah","b":"43:1","e":"43:10","note":"al tira ki g'altikha"},
  "3":{"k":"Isaiah","b":"43:11","e":"43:20","note":"ami v'chiri"}
 },

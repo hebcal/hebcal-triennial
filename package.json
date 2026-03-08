@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/triennial",
-  "version": "6.2.1",
+  "version": "6.2.2",
   "description": "Javascript Triennial Torah Readings",
   "module": "./dist/esm/index.js",
   "type": "module",
@@ -19,6 +19,7 @@
     "docs": "typedoc",
     "pretest": "npm run build",
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "fix": "gts fix",
     "lint": "gts lint"
   },
@@ -44,9 +45,10 @@
   "devDependencies": {
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-typescript": "^12.3.0",
-    "@types/node": "^25.3.3",
+    "@types/node": "^25.3.5",
+    "@vitest/coverage-v8": "^4.0.18",
     "gts": "^7.0.0",
     "rollup": "^4.59.0",
     "typedoc": "^0.28.17",

@@ -1,12 +1,11 @@
-import {expect, test} from 'vitest';
 /* eslint-disable require-jsdoc */
 import {expect, test} from 'vitest';
-import {Writable} from 'stream';
+import {Writable} from 'node:stream';
 import {flags} from '@hebcal/core/dist/esm/event';
 import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
 import {HolidayEvent} from '@hebcal/core/dist/esm/HolidayEvent';
 import {HDate, months} from '@hebcal/hdate';
-import {writeTriennialEvent} from '../src/csv';
+import {writeTriennialEvent, writeTriennialCsv} from '../src/csv';
 
 class StringWritable extends Writable {
   constructor(options) {
@@ -118,4 +117,40 @@ test('writeTriennialEvent-il', () => {
     '27-May-2023,"Nasso","Alternate Haftara","Joshua 6:5-14; 6:12",11',
     '', ''];
   expect(lines).toEqual(expected);
+});
+
+test('writeTriennialCsv', () => {
+  const stream = new StringWritable();
+  writeTriennialCsv(stream, 5784);
+  const output = stream.toString();
+  const lines = output.split('\r\n');
+
+  // First line is the CSV header
+  expect(lines[0]).toBe('"Date","Parashah","Aliyah","Triennial Reading","Verses"');
+
+  // Rosh Chodesh Tevet is always filtered out
+  expect(output).not.toContain('Rosh Chodesh Tevet');
+
+  // Covers 3 years of readings: should have many lines
+  expect(lines.length).toBeGreaterThan(500);
+
+  // Spot-check: Bereshit 5784 (year 2 of triennial cycle), Shabbat Oct 14, 2023
+  expect(output).toContain('14-Oct-2023,"Bereshit",1,"Genesis 2:4-2:9",6');
+  expect(output).toContain('14-Oct-2023,"Bereshit","Haftara","I Samuel 20:18-42 | Shabbat Machar Chodesh",25');
+
+  // Spot-check a holiday: Shavuot I in 5784
+  expect(output).toContain('12-Jun-2024,"Shavuot I",1,"Exodus 19:1-19:6",6');
+});
+
+test('writeTriennialCsv-il', () => {
+  const stream = new StringWritable();
+  writeTriennialCsv(stream, 5784, true);
+  const output = stream.toString();
+  const lines = output.split('\r\n');
+
+  expect(lines[0]).toBe('"Date","Parashah","Aliyah","Triennial Reading","Verses"');
+  expect(output).not.toContain('Rosh Chodesh Tevet');
+
+  // Israel has different parsha schedule in some years
+  expect(output).toContain('"Bereshit"');
 });

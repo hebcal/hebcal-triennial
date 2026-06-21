@@ -3,8 +3,8 @@ import {Event, flags} from '@hebcal/core/dist/esm/event';
 import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
 import {parshaToString} from '@hebcal/leyning/dist/esm/common';
 import {specialReadings2} from '@hebcal/leyning/dist/esm/specialReadings';
-import {getTriennialHaftara} from './haftara';
-import {getTriennial, TriennialAliyot} from './triennial';
+import {getTriennialHaftara} from './haftara.js';
+import {getTriennial, TriennialAliyot} from './triennial.js';
 
 /**
  * Looks up the triennial leyning for this Parashat HaShavua

@@ -1,8 +1,8 @@
 import {Aliyah} from '@hebcal/leyning/dist/esm/types';
 import {cloneHaftara, sumVerses} from '@hebcal/leyning/dist/esm/clone';
 import {makeSummaryFromParts} from '@hebcal/leyning/dist/esm/summary';
-import triennialHaftHolidays0 from './tri-haft-holidays.json';
-import triennialHaft0 from './triennial-haft.json';
+import triennialHaftHolidays0 from './tri-haft-holidays.json.js';
+import triennialHaft0 from './triennial-haft.json.js';
 
 export type TriHaftarah = {
   /** Haftarah object */

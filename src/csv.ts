@@ -10,9 +10,9 @@ import {
   writeHolidayMincha,
 } from '@hebcal/leyning/dist/esm/csv';
 import {WriteStream} from 'node:fs';
-import {getTriennialHaftaraForHoliday} from './haftara';
-import {getTriennialForParshaHaShavua} from './parshaHaShavua';
-import {Triennial} from './triennial';
+import {getTriennialHaftaraForHoliday} from './haftara.js';
+import {getTriennialForParshaHaShavua} from './parshaHaShavua.js';
+import {Triennial} from './triennial.js';
 import {parshaYear} from '@hebcal/core/dist/esm/parshaYear';
 
 export function writeTriennialCsv(

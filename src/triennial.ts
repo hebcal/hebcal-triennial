@@ -8,7 +8,7 @@ import {
   TorahBook,
 } from '@hebcal/leyning/dist/esm/types';
 import {BOOK, calculateNumVerses} from '@hebcal/leyning/dist/esm/common';
-import triennialConfig0 from './triennial.json';
+import triennialConfig0 from './triennial.json.js';
 
 /**
  * Represents triennial aliyot for a given date

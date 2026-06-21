@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
     "types": ["node"],
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
     "target": "es2023",
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -11,7 +8,7 @@
     "skipLibCheck": true,
     "declaration": true,
     "rootDir": "./src",
-    "outDir": "./dist"
+    "outDir": "./dist/esm"
   },
   "include": ["src/**/*"]
 }

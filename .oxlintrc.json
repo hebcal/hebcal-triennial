@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "eqeqeq": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "block-scoped-var": "error",
+    "prefer-arrow-callback": "error",
+    "no-explicit-any": "warn",
+    "ban-ts-comment": "warn"
+  },
+  "ignorePatterns": [
+    "dist",
+    "build",
+    "docs",
+    "test",
+    "src/*.po.ts",
+    "src/*.json.ts"
+  ]
+}

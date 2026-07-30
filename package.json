@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/triennial",
-  "version": "6.3.1",
+  "version": "6.3.2",
   "description": "Javascript Triennial Torah Readings",
   "module": "./dist/esm/index.js",
   "type": "module",

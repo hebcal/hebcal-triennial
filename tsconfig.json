@@ -5,6 +5,12 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "strict": true,
+    // Load-bearing: quick-lru's own .d.ts fails to typecheck (its keys/values/
+    // [Symbol.iterator] don't match the Map base type). Upstream bug, already on
+    // the latest version, so there is nothing to upgrade to. Without this, the
+    // build fails on errors we cannot fix. Prefer removing it if that is ever
+    // resolved — it is what hides unresolvable imports in dependency .d.ts files,
+    // which silently degrade their types to `any`.
     "skipLibCheck": true,
     "declaration": true,
     "rootDir": "./src",

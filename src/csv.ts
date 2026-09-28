@@ -1,4 +1,4 @@
-import {Event, flags} from '@hebcal/core/dist/esm/event';
+import {Event} from '@hebcal/core/dist/esm/event';
 import {HolidayEvent} from '@hebcal/core/dist/esm/HolidayEvent';
 import {getHolidaysForYearArray} from '@hebcal/core/dist/esm/holidays';
 import {getLeyningForParshaHaShavua} from '@hebcal/leyning/dist/esm/leyning';
@@ -26,7 +26,7 @@ export function writeTriennialCsv(
   stream.write('"Date","Parashah","Aliyah","Triennial Reading","Verses"\r\n');
   for (const ev of events) {
     if (
-      ev.getFlags() === flags.PARSHA_HASHAVUA ||
+      ev.hasFlag('PARSHA_HASHAVUA') ||
       !parshaDates[ev.getDate().toString()]
     ) {
       writeTriennialEvent(stream, ev, il);
@@ -58,7 +58,7 @@ export function writeTriennialEvent(
   if (ignore(ev)) {
     return;
   }
-  if (ev.getFlags() === flags.PARSHA_HASHAVUA) {
+  if (ev.hasFlag('PARSHA_HASHAVUA')) {
     writeTriennialEventParsha(stream, ev, il);
   } else {
     writeTriennialEventHoliday(stream, ev as HolidayEvent, il);
@@ -110,11 +110,10 @@ function writeTriennialEventParsha(
  * @private
  */
 function ignore(ev: Event): boolean {
-  const mask = ev.getFlags();
-  if (mask === flags.SPECIAL_SHABBAT) {
+  if (ev.hasFlag('SPECIAL_SHABBAT')) {
     return true;
   }
-  if (mask !== flags.ROSH_CHODESH) {
+  if (!ev.hasFlag('ROSH_CHODESH')) {
     return false;
   }
   return ev.getDate().getDay() === 6;

@@ -1,5 +1,5 @@
 import {months} from '@hebcal/hdate';
-import {Event, flags} from '@hebcal/core/dist/esm/event';
+import {Event} from '@hebcal/core/dist/esm/event';
 import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
 import {parshaToString} from '@hebcal/leyning/dist/esm/common';
 import {specialReadings2} from '@hebcal/leyning/dist/esm/specialReadings';
@@ -16,7 +16,7 @@ export function getTriennialForParshaHaShavua(
 ): TriennialAliyot {
   if (!(ev instanceof Event)) {
     throw new TypeError(`Bad event argument: ${ev}`);
-  } else if (ev.getFlags() !== flags.PARSHA_HASHAVUA) {
+  } else if (!ev.hasFlag('PARSHA_HASHAVUA')) {
     throw new TypeError(`Bad event argument: ${ev.getDesc()}`);
   }
   const hd = ev.getDate();

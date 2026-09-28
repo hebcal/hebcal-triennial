@@ -1,6 +1,6 @@
 {
   "name": "@hebcal/triennial",
-  "version": "6.3.2",
+  "version": "6.3.3",
   "description": "Javascript Triennial Torah Readings",
   "module": "./dist/esm/index.js",
   "type": "module",
@@ -19,7 +19,8 @@
     "predocs": "npm run build:data",
     "docs": "npx -y typedoc",
     "pretest": "npm run build",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "coverage": "vitest run --coverage",
     "fix": "oxlint --fix && prettier --write \"src/**/*.ts\"",
     "lint": "oxlint && prettier --check \"src/**/*.ts\""
@@ -35,8 +36,8 @@
   },
   "homepage": "https://hebcal.github.io/api/triennial/",
   "dependencies": {
-    "@hebcal/core": "^6.9.1",
-    "@hebcal/hdate": "^0.22.7",
+    "@hebcal/core": "^6.10.0",
+    "@hebcal/hdate": "^0.22.8",
     "@hebcal/leyning": "^10.0.0",
     "quick-lru": "^7.3.0"
   },
@@ -44,11 +45,11 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/node": "^26.1.2",
-    "@vitest/coverage-v8": "^4.1.10",
-    "oxlint": "^1.76.0",
-    "prettier": "^3.9.6",
+    "@types/node": "^26.6.3",
+    "@vitest/coverage-v8": "^5.0.2",
+    "oxlint": "^1.86.0",
+    "prettier": "^3.9.9",
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^5.0.2"
   }
 }

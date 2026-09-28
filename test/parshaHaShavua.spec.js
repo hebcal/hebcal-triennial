@@ -231,7 +231,7 @@ test('triennial-haft', () => {
   // 7/9/2022 Parashat Chukat
   const hd1 = new HDate(10, months.TAMUZ, 5782);
   const ev1 = HebrewCalendar.calendar({start: hd1, end: hd1, sedrot: true, noHolidays: true})[0];
-  expect(ev1.getFlags()).toBe(flags.PARSHA_HASHAVUA);
+  expect(ev1.hasFlag('PARSHA_HASHAVUA')).toBe(true);
   expect(ev1.getDesc()).toBe('Parashat Chukat');
   const r1 = getTriennialForParshaHaShavua(ev1);
   expect(r1.haftara).toBe('II Kings 18:1-13, 19:15-19');
@@ -239,7 +239,7 @@ test('triennial-haft', () => {
   // 7/30/2022 Parashat Matot-Masei
   const hd2 = new HDate(2, months.AV, 5782);
   const ev2 = HebrewCalendar.calendar({start: hd2, end: hd2, sedrot: true, noHolidays: true})[0];
-  expect(ev2.getFlags()).toBe(flags.PARSHA_HASHAVUA);
+  expect(ev2.hasFlag('PARSHA_HASHAVUA')).toBe(true);
   expect(ev2.getDesc()).toBe('Parashat Matot-Masei');
   const r2 = getTriennialForParshaHaShavua(ev2);
   expect(r2.haftara).toBe('I Kings 9:2-9, 9:4-5a');
@@ -247,7 +247,7 @@ test('triennial-haft', () => {
   // 8/6/2022 Parashat Devarim
   const hd3 = new HDate(9, months.AV, 5782);
   const ev3 = HebrewCalendar.calendar({start: hd3, end: hd3, sedrot: true, noHolidays: true})[0];
-  expect(ev3.getFlags()).toBe(flags.PARSHA_HASHAVUA);
+  expect(ev3.hasFlag('PARSHA_HASHAVUA')).toBe(true);
   expect(ev3.getDesc()).toBe('Parashat Devarim');
   const r3 = getTriennialForParshaHaShavua(ev3);
   expect(r3.haftara).not.toBeDefined();

@@ -1,4 +1,4 @@
-import {Aliyah} from '@hebcal/leyning/dist/esm/types';
+import type {Aliyah} from '@hebcal/leyning/dist/esm/types';
 import {cloneHaftara, sumVerses} from '@hebcal/leyning/dist/esm/clone';
 import {makeSummaryFromParts} from '@hebcal/leyning/dist/esm/summary';
 import triennialHaftHolidays0 from './tri-haft-holidays.json.js';
@@ -24,6 +24,17 @@ type TriennialHaft = Record<string, TriennialHaftYearMap>;
 
 const triennialHaft = triennialHaft0 as TriennialHaft;
 
+function makeTriHaftarah(
+  src: TriennialHaftAliyah | TriennialHaftAliyah[]
+): TriHaftarah {
+  const haft = cloneHaftara(src);
+  return {
+    haft,
+    haftara: makeSummaryFromParts(haft),
+    haftaraNumV: sumVerses(haft),
+  };
+}
+
 /**
  * Looks up the alternative triennial Haftara for a given parsha
  *
@@ -46,15 +57,7 @@ export function getTriennialHaftara(
   const triHaft = triennialHaft[name];
   const triHaft2 = triHaft?.[yearNum + 1];
   // Normal condition if missing, e.g., Devarim and Vaetchanan are the same as full kriyah
-  if (typeof triHaft2 === 'object') {
-    const haft = cloneHaftara(triHaft2);
-    return {
-      haft: haft,
-      haftara: makeSummaryFromParts(haft),
-      haftaraNumV: sumVerses(haft),
-    };
-  }
-  return undefined;
+  return typeof triHaft2 === 'object' ? makeTriHaftarah(triHaft2) : undefined;
 }
 
 const triennialHaftHolidays = triennialHaftHolidays0 as TriennialHaftYearMap;
@@ -70,13 +73,5 @@ export function getTriennialHaftaraForHoliday(
     return getTriennialHaftara([key], yearNum);
   }
   const triHaft2 = triennialHaftHolidays[key];
-  if (typeof triHaft2 === 'object') {
-    const haft = cloneHaftara(triHaft2);
-    return {
-      haft: haft,
-      haftara: makeSummaryFromParts(haft),
-      haftaraNumV: sumVerses(haft),
-    };
-  }
-  return undefined;
+  return typeof triHaft2 === 'object' ? makeTriHaftarah(triHaft2) : undefined;
 }

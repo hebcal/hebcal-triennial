@@ -5,6 +5,7 @@
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "strict": true,
+    "verbatimModuleSyntax": true,
     // Load-bearing: quick-lru's own .d.ts fails to typecheck (its keys/values/
     // [Symbol.iterator] don't match the Map base type). Upstream bug, already on
     // the latest version, so there is nothing to upgrade to. Without this, the

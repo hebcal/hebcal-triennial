@@ -1,10 +1,10 @@
 import {months} from '@hebcal/hdate';
 import {Event} from '@hebcal/core/dist/esm/event';
-import {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
+import type {ParshaEvent} from '@hebcal/core/dist/esm/ParshaEvent';
 import {parshaToString} from '@hebcal/leyning/dist/esm/common';
 import {specialReadings2} from '@hebcal/leyning/dist/esm/specialReadings';
 import {getTriennialHaftara} from './haftara.js';
-import {getTriennial, TriennialAliyot} from './triennial.js';
+import {getTriennial, type TriennialAliyot} from './triennial.js';
 
 /**
  * Looks up the triennial leyning for this Parashat HaShavua
@@ -36,13 +36,13 @@ export function getTriennialForParshaHaShavua(
   const yearNum = hyear - startYear;
   const name = parshaToString(parsha); // untranslated
   const reading = triennial.getReading(name, yearNum);
-  if (typeof reading !== 'object') {
+  if (!reading.aliyot) {
     throw new ReferenceError(
       `Can't load reading for ${name} in ${hyear} (year number ${yearNum})`
     );
   }
   // possibly replace 7th aliyah and/or maftir
-  const special = specialReadings2(parsha, hd, il, reading.aliyot!);
+  const special = specialReadings2(parsha, hd, il, reading.aliyot);
   const reason = special.reason;
   const aliyotMap = special.aliyot;
   for (const [num, str] of Object.entries(reason)) {
